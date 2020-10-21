@@ -19,10 +19,10 @@ from django.urls import path, include
 from user import views
 
 urlpatterns = [
+    path('', views.index),
     path('admin/', admin.site.urls),
     path('index/', views.index),
-    path('login/', views.login),
-    path('register/', views.register),
-    path('logout/', views.logout),
-    path('captcha/', include('captcha.urls'))
+    path('prod/', include('product.urls')),
+    path('user/', include('user.urls')),
+    path('captcha/', include('captcha.urls')),
 ]

@@ -7,7 +7,7 @@ from user import models, forms
 
 def index(request):
     if not request.session.get('is_login', None):
-        return redirect('/login/')
+        return redirect('/user/login/')
     return render(request, 'login/index.html')
 
 
@@ -47,6 +47,6 @@ def register(request):
 def logout(request):
     if not request.session.get('is_login', None):
         # 如果本来就没有登录，就不用登出
-        return redirect('/login/')
+        return redirect('/user/login/')
     request.session.flush()
-    return redirect('/login/')
+    return redirect('/user/login/')

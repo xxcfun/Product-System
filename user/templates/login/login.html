@@ -11,7 +11,7 @@
 <body>
 <div class="container">
   <div class="col">
-    <form class="form-login" action="/login/" method="post">
+    <form class="form-login" action="/user/login/" method="post">
       {% csrf_token %}
       {% if login_form.captcha.errors %}
         <div class="alert alert-warning">{{ login_form.captcha.errors }}</div>
