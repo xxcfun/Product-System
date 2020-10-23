@@ -5,8 +5,85 @@
 {% endblock %}
 
 {% block container %}
-  <h1>这里是生产管理界面</h1>
+
+  <blockquote class="layui-elem-quote" style="display: flex; justify-content: space-between;">
+    生产列表
+  </blockquote>
+
+  <div>
+    <fieldset class="layui-elem-field">
+      <legend>订单状态</legend>
+      <div class="layui-field-box">
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod' %}">备料</a>
+        <i class="layui-icon layui-icon-right"></i>
+        <a class="layui-btn layui-btn-primary" href="">派单</a>
+        <i class="layui-icon layui-icon-right"></i>
+        <a class="layui-btn layui-btn-primary" href="">生产中</a>
+        <i class="layui-icon layui-icon-right"></i>
+        <a class="layui-btn layui-btn-primary" href="">待发货</a>
+        <i class="layui-icon layui-icon-right"></i>
+        <a class="layui-btn layui-btn-primary" href="">订单完成</a>
+      </div>
+    </fieldset>
+  </div>
+
+  <div>
+    <table class="layui-table">
+      <colgroup>
+        <col width="25%">
+        <col width="25%">
+        <col width="10%">
+        <col width="20%">
+        <col width="10%">
+        <col width="10%">
+      </colgroup>
+      <thead>
+      <tr>
+        <th>客户名称</th>
+        <th>货品名称</th>
+        <th>数量</th>
+        <th>发货时间</th>
+        <th>订单状态</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for product in products %}
+      <tr>
+        <td>{{ product.customer }}</td>
+        <td>{{ product.good }}</td>
+        <td>{{ product.number }}</td>
+        <td>{{ product.deliver_time }}</td>
+        <td><a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">{{ product.get_status_display }}</a></td>
+        <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="">确定</a></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if page_obj %}
+    {% if page_obj.has_previous %}
+      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.previous_page_number }}">上一页</a>
+    {% endif %}
+    <a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">当前页 {{ page_obj.number }} 共 {{ paginator.num_pages }} 页.</a>
+    {% if page_obj.has_next %}
+      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.next_page_number }}">下一页</a>
+    {% endif %}
+  {% endif %}
+{#  <div id="test1" style="justify-content: center"></div>  # layui实现分页#}
 {% endblock %}
 
 {% block footer %}
+{#  <script>#}
+{#      layui.use('laypage', function () {#}
+{#          var laypage = layui.laypage;#}
+{##}
+{#          //执行一个laypage实例#}
+{#          laypage.render({#}
+{#              elem: 'test1' //注意，这里的 test1 是 ID，不用加 # 号#}
+{#              , count: 50 //数据总数，从服务端得到#}
+{#          });#}
+{#      });#}
+{#  </script>#}
 {% endblock %}

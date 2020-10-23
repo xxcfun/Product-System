@@ -1,12 +1,126 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  <title>生产订单查询</title>
+  <title>订单查询</title>
 {% endblock %}
 
 {% block container %}
-  <h1>这里是生产订单查询界面</h1>
+
+  <blockquote class="layui-elem-quote">
+    订单列表
+  </blockquote>
+
+  <div>
+
+    <form class="layui-form" action="">
+      <fieldset class="layui-elem-field">
+        <legend>搜索内容</legend>
+        <div class="layui-field-box">
+          <div class="layui-form-item">
+            <label class="layui-form-label">客户名称</label>
+            <div class="layui-input-block">
+              <input type="text" name="customer" placeholder="按客户名称进行搜索" autocomplete="off"
+                     class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">货品名称</label>
+            <div class="layui-input-block">
+              <input type="text" name="good" placeholder="按货品名称进行搜索" autocomplete="off"
+                     class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">订单状态</label>
+            <div class="layui-input-block">
+              <select name="status">
+                <option value=""></option>
+                <option value="0">备料</option>
+                <option value="1">派单</option>
+                <option value="2">生产中</option>
+                <option value="3">待发货</option>
+                <option value="4">订单完成</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">提交搜索</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+
+    <table class="layui-table">
+      <colgroup>
+        <col width="25%">
+        <col width="25%">
+        <col width="10%">
+        <col width="20%">
+        <col width="10%">
+        <col width="10%">
+      </colgroup>
+      <thead>
+      <tr>
+        <th>客户名称</th>
+        <th>货品名称</th>
+        <th>数量</th>
+        <th>发货时间</th>
+        <th>订单状态</th>
+        <th>业务员</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for product in products %}
+      <tr>
+        <td>{{ product.customer }}</td>
+        <td>{{ product.good }}</td>
+        <td>{{ product.number }}</td>
+        <td>{{ product.deliver_time }}</td>
+        <td><a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">{{ product.get_status_display }}</a></td>
+        <td>{{ product.user }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if page_obj %}
+    {% if page_obj.has_previous %}
+      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.previous_page_number }}">上一页</a>
+    {% endif %}
+    <a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">当前页 {{ page_obj.number }} 共 {{ paginator.num_pages }} 页.</a>
+    {% if page_obj.has_next %}
+      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.next_page_number }}">下一页</a>
+    {% endif %}
+  {% endif %}
+{#  <div id="test1" style="justify-content: center"></div>  # layui实现分页#}
 {% endblock %}
 
 {% block footer %}
+  <script>
+      //Demo
+      layui.use('form', function () {
+          var form = layui.form;
+
+          //监听提交
+          form.on('submit(formDemo)', function (data) {
+              layer.msg(JSON.stringify(data.field));
+              return false;
+          });
+      });
+  </script>
+{#  <script>#}
+{#      layui.use('laypage', function () {#}
+{#          var laypage = layui.laypage;#}
+{##}
+{#          //执行一个laypage实例#}
+{#          laypage.render({#}
+{#              elem: 'test1' //注意，这里的 test1 是 ID，不用加 # 号#}
+{#              , count: 50 //数据总数，从服务端得到#}
+{#          });#}
+{#      });#}
+{#  </script>#}
 {% endblock %}
