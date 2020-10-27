@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>用户列表</title>
+{% endblock %}
+
+{% block container %}
+  <blockquote class="layui-elem-quote">
+    用户列表
+  </blockquote>
+
+  <div>
+    <table class="layui-table">
+      <colgroup>
+        <col width="10%">
+        <col width="10%">
+        <col width="10%">
+        <col width="10%">
+        <col width="10%">
+        <col width="10%">
+        <col width="10%">
+        <col width="10%">
+        <col width="10%">
+        <col width="10%">
+      </colgroup>
+      <thead>
+      <tr>
+        <th>账户名</th>
+        <th>密码</th>
+        <th>备料审核</th>
+        <th>派单审核</th>
+        <th>生产审核</th>
+        <th>待发货审核</th>
+        <th>完成审核</th>
+        <th>用户是否有效</th>
+        <th>创建时间</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for user in user_list %}
+      <tr style="color: dodgerblue">
+        <td>{{ user.name }}</td>
+        <td>{{ user.password }}</td>
+        <td>{{ user.beiliao }}</td>
+        <td>{{ user.paidan }}</td>
+        <td>{{ user.shengchanzhong }}</td>
+        <td>{{ user.daifahuo }}</td>
+        <td>{{ user.wancheng }}</td>
+        <td>{{ user.is_valid }}</td>
+        <td>{{ user.created_time }}</td>
+        <td>
+          <a class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:;">编辑</a>
+          <a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:;">删除</a>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+{#  {% if page_obj %}#}
+{#    {% if page_obj.has_previous %}#}
+{#      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.previous_page_number }}">上一页</a>#}
+{#    {% endif %}#}
+{#    <a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">当前页 {{ page_obj.number }} 共 {{ paginator.num_pages }} 页.</a>#}
+{#    {% if page_obj.has_next %}#}
+{#      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.next_page_number }}">下一页</a>#}
+{#    {% endif %}#}
+{#  {% endif %}#}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

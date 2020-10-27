@@ -600,7 +600,7 @@ var i,
 		return 0;
 	},
 
-	// General-purpose constants
+	// General-purpose utils
 	MAX_NEGATIVE = 1 << 31,
 
 	// Instance methods

@@ -2,21 +2,16 @@ from django.db import models
 
 # Create your models here.
 from user.models import User
+from utils import constants
 
 
 class Product(models.Model):
-    PROD_STATUS = {
-        (1, '备料'),
-        (2, '派单'),
-        (3, '生产中'),
-        (4, '待发货'),
-        (5, '订单完成'),
-    }
+
     customer = models.CharField('客户名称', max_length=64)
     good = models.CharField('商品名称', max_length=128)
     deliver_time = models.CharField('发货时间', max_length=128)
     number = models.IntegerField('数量')
-    status = models.SmallIntegerField('订单状态', choices=PROD_STATUS)
+    status = models.SmallIntegerField('订单状态', choices=constants.PROD_STATUS, default=constants.PROD_BL)
     is_valid = models.BooleanField('订单是否作废', default=True)
     created_time = models.DateTimeField('创建时间', auto_now_add=True)
     updated_time = models.DateTimeField('修改时间', auto_now=True)

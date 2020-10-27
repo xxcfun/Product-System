@@ -14,15 +14,16 @@
     <fieldset class="layui-elem-field">
       <legend>订单状态</legend>
       <div class="layui-field-box">
-        <a class="layui-btn layui-btn-primary" href="{% url 'prod' %}">备料</a>
+        <a class="layui-btn layui-btn-normal" href="{% url 'prod' %}">全部订单</a>
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod' %}?status={{ constants.PROD_BL }}">备料</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="">派单</a>
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod' %}?status={{ constants.PROD_PD }}">派单</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="">生产中</a>
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod' %}?status={{ constants.PROD_SC }}">生产中</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="">待发货</a>
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod' %}?status={{ constants.PROD_DFH }}">待发货</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="">订单完成</a>
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod' %}?status={{ constants.PROD_WC }}">订单完成</a>
       </div>
     </fieldset>
   </div>
@@ -55,22 +56,32 @@
         <td>{{ product.number }}</td>
         <td>{{ product.deliver_time }}</td>
         <td><a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">{{ product.get_status_display }}</a></td>
-        <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="">确定</a></td>
+        <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="{% url 'prod_edit' product.id %}">确定</a></td>
       </tr>
       {% endfor %}
       </tbody>
     </table>
   </div>
 
-  {% if page_obj %}
-    {% if page_obj.has_previous %}
-      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.previous_page_number }}">上一页</a>
-    {% endif %}
-    <a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">当前页 {{ page_obj.number }} 共 {{ paginator.num_pages }} 页.</a>
-    {% if page_obj.has_next %}
-      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.next_page_number }}">下一页</a>
-    {% endif %}
-  {% endif %}
+  <div>
+    <nav>
+      <ul class="pagination">
+        <li class="step-links">
+          {% if products.has_previous %}
+            <a class='active layui-btn layui-btn-normal layui-btn-sm' href="?page={{ products.previous_page_number }}">上一页</a>
+          {% endif %}
+
+          <span class="current layui-btn layui-btn-primary layui-btn-sm">
+                    当前页 {{ products.number }}. 共 {{ products.paginator.num_pages }} 页.</span>
+
+          {% if products.has_next %}
+            <a class='active layui-btn layui-btn-normal layui-btn-sm'
+               href="?page={{ products.next_page_number }}">下一页</a>
+          {% endif %}
+        </li>
+      </ul>
+    </nav>
+  </div>
 {#  <div id="test1" style="justify-content: center"></div>  # layui实现分页#}
 {% endblock %}
 

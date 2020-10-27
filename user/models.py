@@ -13,7 +13,9 @@ class User(models.Model):
     beiliao = models.BooleanField('备料', default=False)
     paidan = models.BooleanField('派单', default=False)
     shengchanzhong = models.BooleanField('生产中', default=False)
+    daifahuo = models.BooleanField('待发货', default=False)
     wancheng = models.BooleanField('订单完成', default=False)
+    is_valid = models.BooleanField('是否有效', default=True)
     created_time = models.DateTimeField('创建时间', auto_now_add=True)
     # power = models.ManyToManyField(Power, verbose_name='权限')
 

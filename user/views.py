@@ -8,7 +8,7 @@ from user import models, forms
 def index(request):
     if not request.session.get('is_login', None):
         return redirect('login')
-    return render(request, 'index.html')
+    return render(request, 'prod_list.html')
 
 
 def login(request):
@@ -50,3 +50,10 @@ def logout(request):
         return redirect('login')
     request.session.flush()
     return redirect('login')
+
+
+# def list(request):
+#     user_list = models.User.objects.filter(is_valid=True)
+#     return render(request, 'userlist.html', {
+#         'user_list': user_list
+#     })
