@@ -14,16 +14,16 @@
     <fieldset class="layui-elem-field">
       <legend>订单状态</legend>
       <div class="layui-field-box">
-        <a class="layui-btn layui-btn-normal" href="{% url 'prod' %}">全部订单</a>
-        <a class="layui-btn layui-btn-primary" href="{% url 'prod' %}?status={{ constants.PROD_BL }}">备料</a>
+{#        <a class="layui-btn layui-btn-normal" href="{% url 'prod_all' %}">全部订单</a>#}
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod_bl' %}">备料</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'prod' %}?status={{ constants.PROD_PD }}">派单</a>
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod_pd' %}">派单</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'prod' %}?status={{ constants.PROD_SC }}">生产中</a>
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod_scz' %}">生产中</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'prod' %}?status={{ constants.PROD_DFH }}">待发货</a>
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod_dfh' %}">待发货</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'prod' %}?status={{ constants.PROD_WC }}">订单完成</a>
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod_ddwc' %}">订单完成</a>
       </div>
     </fieldset>
   </div>
@@ -56,7 +56,11 @@
         <td>{{ product.number }}</td>
         <td>{{ product.deliver_time }}</td>
         <td><a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">{{ product.get_status_display }}</a></td>
-        <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="{% url 'prod_edit' product.id %}">确定</a></td>
+        {% if product.status == 5 %}
+          <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="{% url 'prod_del' product.id %}">销毁订单</a></td>
+        {% else %}
+          <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="{% url 'prod_edit' product.id %}">确认</a></td>
+        {% endif %}
       </tr>
       {% endfor %}
       </tbody>
