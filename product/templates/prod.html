@@ -17,8 +17,6 @@
 {#        <a class="layui-btn layui-btn-normal" href="{% url 'prod_all' %}">全部订单</a>#}
         <a class="layui-btn layui-btn-primary" href="{% url 'prod_bl' %}">备料</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'prod_pd' %}">派单</a>
-        <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn layui-btn-primary" href="{% url 'prod_scz' %}">生产中</a>
         <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn layui-btn-primary" href="{% url 'prod_dfh' %}">待发货</a>
@@ -36,7 +34,6 @@
         <col width="10%">
         <col width="20%">
         <col width="10%">
-        <col width="10%">
       </colgroup>
       <thead>
       <tr>
@@ -44,7 +41,6 @@
         <th>商品名称</th>
         <th>数量</th>
         <th>发货时间</th>
-        <th>订单状态</th>
         <th>操作</th>
       </tr>
       </thead>
@@ -55,12 +51,7 @@
         <td>{{ product.good }}</td>
         <td>{{ product.number }}</td>
         <td>{{ product.deliver_time }}</td>
-        <td><a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">{{ product.get_status_display }}</a></td>
-        {% if product.status == 5 %}
-          <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="{% url 'prod_del' product.id %}">销毁订单</a></td>
-        {% else %}
-          <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="{% url 'prod_edit' product.id %}">确认</a></td>
-        {% endif %}
+        <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="{% url 'prod_edit' product.id %}">确认</a></td>
       </tr>
       {% endfor %}
       </tbody>
@@ -86,19 +77,7 @@
       </ul>
     </nav>
   </div>
-{#  <div id="test1" style="justify-content: center"></div>  # layui实现分页#}
 {% endblock %}
 
 {% block footer %}
-{#  <script>#}
-{#      layui.use('laypage', function () {#}
-{#          var laypage = layui.laypage;#}
-{##}
-{#          //执行一个laypage实例#}
-{#          laypage.render({#}
-{#              elem: 'test1' //注意，这里的 test1 是 ID，不用加 # 号#}
-{#              , count: 50 //数据总数，从服务端得到#}
-{#          });#}
-{#      });#}
-{#  </script>#}
 {% endblock %}

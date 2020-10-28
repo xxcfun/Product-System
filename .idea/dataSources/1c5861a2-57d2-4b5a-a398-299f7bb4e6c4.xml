@@ -768,8 +768,8 @@ SELECT|sys.sys_config:null
     <table id="243" parent="7" name="django_content_type"/>
     <table id="244" parent="7" name="django_migrations"/>
     <table id="245" parent="7" name="django_session"/>
-    <table id="246" parent="7" name="product"/>
-    <table id="247" parent="7" name="record"/>
+    <table id="246" parent="7" name="order_list"/>
+    <table id="247" parent="7" name="product_list"/>
     <table id="248" parent="7" name="user"/>
     <column id="249" parent="235" name="id">
       <Position>1</Position>
@@ -1226,9 +1226,9 @@ model</ColNames>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="340" parent="246" name="status">
+    <column id="340" parent="246" name="salesperson">
       <Position>6</Position>
-      <DataType>smallint(6)|0s</DataType>
+      <DataType>varchar(64)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="341" parent="246" name="is_valid">
@@ -1241,51 +1241,52 @@ model</ColNames>
       <DataType>datetime(6)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="343" parent="246" name="updated_time">
-      <Position>9</Position>
-      <DataType>datetime(6)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="344" parent="246" name="user_id">
-      <Position>10</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <index id="345" parent="246" name="product_user_id_091f6d86">
-      <ColNames>user_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="346" parent="246" name="PRIMARY">
+    <key id="343" parent="246" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="347" parent="247" name="id">
+    <column id="344" parent="247" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="348" parent="247" name="time">
+    <column id="345" parent="247" name="owen_num">
       <Position>2</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="346" parent="247" name="status">
+      <Position>3</Position>
+      <DataType>smallint(6)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="347" parent="247" name="created_time">
+      <Position>4</Position>
       <DataType>datetime(6)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="349" parent="247" name="prod_id">
-      <Position>3</Position>
+    <column id="348" parent="247" name="updated_time">
+      <Position>5</Position>
+      <DataType>datetime(6)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="349" parent="247" name="order_id">
+      <Position>6</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="350" parent="247" name="user_id">
-      <Position>4</Position>
+      <Position>7</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="351" parent="247" name="record_prod_id_b0536809">
-      <ColNames>prod_id</ColNames>
+    <index id="351" parent="247" name="product_list_order_id_fa5a993a">
+      <ColNames>order_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="352" parent="247" name="record_user_id_892e847f">
+    <index id="352" parent="247" name="product_list_user_id_20ab6845">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
     </index>

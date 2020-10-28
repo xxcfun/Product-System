@@ -7,7 +7,6 @@ from user.models import User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('name', 'password', 'beiliao', 'paidan', 'shengchanzhong',
-                    'daifahuo', 'wancheng', 'is_valid', 'created_time')
+    list_display = ('name', 'password', 'is_valid', 'created_time')
     list_per_page = 10
     ordering = ['-created_time']

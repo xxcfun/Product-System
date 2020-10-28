@@ -15,9 +15,8 @@
       <colgroup>
         <col width="25%">
         <col width="25%">
-        <col width="10%">
         <col width="20%">
-        <col width="10%">
+        <col width="20%">
       </colgroup>
       <thead>
       <tr>
@@ -25,17 +24,15 @@
         <th>商品名称</th>
         <th>数量</th>
         <th>发货时间</th>
-        <th>订单状态</th>
       </tr>
       </thead>
       <tbody>
-      {% for product in prod_list %}
+      {% for product in OrderList %}
       <tr style="color: dodgerblue">
         <td>{{ product.customer }}</td>
         <td>{{ product.good }}</td>
         <td>{{ product.number }}</td>
         <td>{{ product.deliver_time }}</td>
-        <td><a class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:;">{{ product.get_status_display }}</a></td>
       </tr>
       {% endfor %}
       </tbody>
