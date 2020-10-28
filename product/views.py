@@ -1,31 +1,17 @@
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-# Create your views here.
-from django.views.generic import ListView
+def product_all(request):
+    """提起订单，开始生产"""
 
-from product import models
-from product.models import ProductList
-from utils import constants
+    return render(request, 'product.html', {
 
-
-def order_all(request):
-    order_list = models.OrderList.objects.filter(is_valid=True)
-    paginator = Paginator(order_list, 10)
-    page = request.GET.get('page')
-    try:
-        OrderList = paginator.page(page)
-    except PageNotAnInteger:
-        OrderList = paginator.page(1)
-    except EmptyPage:
-        OrderList = paginator.page(paginator.num_pages)
-
-    return render(request, 'prod_list.html', {
-        'OrderList': OrderList
     })
 
+
+def production(request, pk):
+    return render(request, 'product.html', {
+
+    })
 
 # def prod_bl(request):
 #     prod_bl_list = models.ProductList.objects.filter(is_valid=True, status=constants.PROD_BL)
@@ -38,7 +24,7 @@ def order_all(request):
 #     except EmptyPage:
 #         ProductLists = paginator.page(paginator.num_pages)
 #
-#     return render(request, 'prod.html', {
+#     return render(request, 'product.html', {
 #         'ProductLists': ProductLists
 #     })
 #
@@ -54,7 +40,7 @@ def order_all(request):
 #     except EmptyPage:
 #         ProductLists = paginator.page(paginator.num_pages)
 #
-#     return render(request, 'prod.html', {
+#     return render(request, 'product.html', {
 #         'ProductLists': ProductLists
 #     })
 #
@@ -70,7 +56,7 @@ def order_all(request):
 #     except EmptyPage:
 #         ProductLists = paginator.page(paginator.num_pages)
 #
-#     return render(request, 'prod.html', {
+#     return render(request, 'product.html', {
 #         'ProductLists': ProductLists
 #     })
 #
@@ -86,7 +72,7 @@ def order_all(request):
 #     except EmptyPage:
 #         ProductLists = paginator.page(paginator.num_pages)
 #
-#     return render(request, 'prod.html', {
+#     return render(request, 'product.html', {
 #         'ProductLists': ProductLists
 #     })
 #
@@ -99,7 +85,7 @@ def order_all(request):
 #
 # class ProdListView(ListView):
 #     models = ProductList
-#     template_name = 'prod_list.html'
+#     template_name = 'order.html'
 #     context_object_name = 'prod_list'
 #     paginate_by = 10
 #

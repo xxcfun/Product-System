@@ -1311,52 +1311,27 @@ model</ColNames>
       <DataType>varchar(256)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="357" parent="248" name="beiliao">
+    <column id="357" parent="248" name="is_valid">
       <Position>4</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="358" parent="248" name="paidan">
+    <column id="358" parent="248" name="created_time">
       <Position>5</Position>
-      <DataType>tinyint(1)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="359" parent="248" name="shengchanzhong">
-      <Position>6</Position>
-      <DataType>tinyint(1)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="360" parent="248" name="daifahuo">
-      <Position>7</Position>
-      <DataType>tinyint(1)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="361" parent="248" name="wancheng">
-      <Position>8</Position>
-      <DataType>tinyint(1)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="362" parent="248" name="is_valid">
-      <Position>9</Position>
-      <DataType>tinyint(1)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="363" parent="248" name="created_time">
-      <Position>10</Position>
       <DataType>datetime(6)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="364" parent="248" name="name">
+    <index id="359" parent="248" name="name">
       <ColNames>name</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="365" parent="248" name="PRIMARY">
+    <key id="360" parent="248" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="366" parent="248" name="name">
+    <key id="361" parent="248" name="name">
       <ColNames>name</ColNames>
       <UnderlyingIndexName>name</UnderlyingIndexName>
     </key>

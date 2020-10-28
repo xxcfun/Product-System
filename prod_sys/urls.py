@@ -21,7 +21,8 @@ from user import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
-    path('prod/', include('product.urls')),
+    path('order/', include('order.urls')),
+    path('product/', include('product.urls')),
     path('user/', include('user.urls')),
     path('captcha/', include('captcha.urls')),
 ]

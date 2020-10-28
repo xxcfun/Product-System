@@ -3,10 +3,6 @@ from django.db import models
 # Create your models here.
 
 
-# class Power(models.Model):
-#     dist = models.CharField('操作', max_length=64)
-
-
 class User(models.Model):
     name = models.CharField('用户名', max_length=128, unique=True)
     password = models.CharField('密码', max_length=256)
