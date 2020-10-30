@@ -14,14 +14,14 @@
     <fieldset class="layui-elem-field">
       <legend>订单状态</legend>
       <div class="layui-field-box">
-        <a class="layui-btn layui-btn-normal" href="{% url 'product_all' %}">全部订单</a>
         <a class="layui-btn layui-btn-primary" href="{% url 'product_bl' %}">备料</a>
         <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn layui-btn-primary" href="{% url 'product_scz' %}">生产中</a>
         <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn layui-btn-primary" href="{% url 'product_dfh' %}">待发货</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'product_ddwc' %}">订单完成</a>
+        <a class="layui-btn" href="{% url 'product_ddwc' %}">订单完成</a>
+        <a style="display: inline; float: right;" class="layui-btn layui-btn-normal" href="{% url 'product_all' %}">我的所有生产订单</a>
       </div>
     </fieldset>
   </div>
@@ -29,8 +29,10 @@
   <div>
     <table class="layui-table">
       <colgroup>
-        <col width="25%">
-        <col width="25%">
+        <col width="15%">
+        <col width="15%">
+        <col width="10%">
+        <col width="10%">
         <col width="10%">
         <col width="10%">
         <col width="10%">
@@ -43,6 +45,8 @@
         <th>数量</th>
         <th>发货时间</th>
         <th>状态</th>
+        <th>归属业务</th>
+        <th>生产人员</th>
         <th>操作</th>
       </tr>
       </thead>
@@ -54,32 +58,28 @@
         <td>{{ product.owen_num }}</td>
         <td>{{ product.order.deliver_time }}</td>
         <td>{{ product.get_status_display }}</td>
-        <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="">确认</a></td>
+        <td>{{ product.order.salesperson }}</td>
+        <td>{{ product.user }}</td>
+        {% if product.status == 4 %}
+        <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:;">生产完成，可发货</a></td>
+        {% else %}
+        <td><a class="layui-btn layui-btn-warm layui-btn-sm" href="{% url 'product_edit' product.id %}">确定</a></td>
+        {% endif %}
       </tr>
       {% endfor %}
       </tbody>
     </table>
   </div>
 
-  <div>
-    <nav>
-      <ul class="pagination">
-        <li class="step-links">
-          {% if products.has_previous %}
-            <a class='active layui-btn layui-btn-normal layui-btn-sm' href="?page={{ products.previous_page_number }}">上一页</a>
-          {% endif %}
-
-          <span class="current layui-btn layui-btn-primary layui-btn-sm">
-                    当前页 {{ products.number }}. 共 {{ products.paginator.num_pages }} 页.</span>
-
-          {% if products.has_next %}
-            <a class='active layui-btn layui-btn-normal layui-btn-sm'
-               href="?page={{ products.next_page_number }}">下一页</a>
-          {% endif %}
-        </li>
-      </ul>
-    </nav>
-  </div>
+  {% if page_obj %}
+    {% if page_obj.has_previous %}
+      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.previous_page_number }}">上一页</a>
+    {% endif %}
+    <a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">当前页 {{ page_obj.number }} 共 {{ paginator.num_pages }} 页.</a>
+    {% if page_obj.has_next %}
+      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.next_page_number }}">下一页</a>
+    {% endif %}
+  {% endif %}
 {% endblock %}
 
 {% block footer %}

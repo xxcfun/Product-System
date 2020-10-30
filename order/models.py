@@ -25,4 +25,8 @@ class Order(models.Model):
         """更改订单产品的数量信息"""
         self.number = F('number') - count
         self.save()
+        if self.number == 0:
+            self.is_valid = False
+            self.save()
+            self.refresh_from_db()
         self.refresh_from_db()

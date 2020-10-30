@@ -18,4 +18,6 @@ urlpatterns = [
     path('DFH/', DFHView.as_view(), name='product_dfh'),
     # 订单完成
     path('DDWC/', DDWCView.as_view(), name='product_ddwc'),
+    # 订单状态转换
+    path('edit/<int:pk>', views.product_edit, name='product_edit'),
 ]

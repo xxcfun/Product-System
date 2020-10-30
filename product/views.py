@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 
 from order.models import Order
-from product import models
 from product.models import Product
 from user.models import User
 from utils import constants
@@ -13,7 +12,7 @@ from utils import constants
 def product_all(request):
     """所有待生产订单"""
     user = get_object_or_404(User, name=request.session.get('user_name'))
-    product_list = user.products.filter(status=constants.PROD_BL)
+    product_list = user.products.all()
     paginator = Paginator(product_list, 10)
     page = request.GET.get('page')
     try:
@@ -25,6 +24,7 @@ def product_all(request):
 
     return render(request, 'product.html', {
         'Product': Product
+
     })
 
 
@@ -40,6 +40,12 @@ def prod_add(request, pk):
         return HttpResponse('数量不合法')
     # 更新数量信息
     order.update_number(count)
+
+    # 将数量为0的订单改为不启用状态
+    if order.number == 0:
+        order.is_valid = False
+        order.save()
+
     # 生成生产信息记录
     # 如果已经添加到生产列表中，只把生产数量更新就行
     try:
@@ -53,33 +59,60 @@ def prod_add(request, pk):
             user=user,
             owen_num=count,
         )
-    return HttpResponse('ok')
+    return redirect('product_bl')
 
 
 class ProductStatusView(ListView):
+    """生产状态类"""
     models = Product
     template_name = 'product_status.html'
     context_object_name = 'products'
+    paginate_by = 10
 
 
 class BLView(ProductStatusView):
+    """备料"""
     def get_queryset(self):
-        return Product.objects.filter(status=constants.PROD_BL)
+        user = self.request.session.get('user_id')
+        return Product.objects.filter(status=constants.PROD_BL, user=user).order_by('-updated_time')
 
 
 class SCZView(ProductStatusView):
+    """生产中"""
     def get_queryset(self):
-        return Product.objects.filter(status=constants.PROD_SC)
+        user = self.request.session.get('user_id')
+        return Product.objects.filter(status=constants.PROD_SC, user=user).order_by('-updated_time')
 
 
 class DFHView(ProductStatusView):
+    """待发货"""
     def get_queryset(self):
-        return Product.objects.filter(status=constants.PROD_DFH)
+        user = self.request.session.get('user_id')
+        return Product.objects.filter(status=constants.PROD_DFH, user=user).order_by('-updated_time')
 
 
 class DDWCView(ProductStatusView):
+    """订单完成"""
     def get_queryset(self):
-        return Product.objects.filter(status=constants.PROD_WC)
+        user = self.request.session.get('user_id')
+        return Product.objects.filter(status=constants.PROD_WC, user=user).order_by('-updated_time')
+
+
+def product_edit(request, pk):
+    prod = get_object_or_404(Product, pk=pk)
+    prod_status = prod.status
+    if prod_status == constants.PROD_BL:
+        prod.status = constants.PROD_SC
+        prod.save()
+        return redirect('product_scz')
+    if prod_status == constants.PROD_SC:
+        prod.status = constants.PROD_DFH
+        prod.save()
+        return redirect('product_dfh')
+    if prod_status == constants.PROD_DFH:
+        prod.status = constants.PROD_WC
+        prod.save()
+        return redirect('product_ddwc')
 
 
 def product_seach(request):
