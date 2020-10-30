@@ -8,7 +8,7 @@ from utils import constants
 
 class Product(models.Model):
     order = models.ForeignKey(Order, verbose_name='生产订单', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, verbose_name='生产人员', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name='生产人员', related_name='products', on_delete=models.CASCADE)
     owen_num = models.IntegerField('生产数量')
     status = models.SmallIntegerField('生产状态', choices=constants.PROD_STATUS,
                                       default=constants.PROD_BL)

@@ -1,8 +1,10 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from order import models
+from order.models import Order
 
 
 def order_all(request):
@@ -18,4 +20,12 @@ def order_all(request):
 
     return render(request, 'order.html', {
         'Order': Order
+    })
+
+
+def order_detail(request, pk):
+    """将订单加入生产列表"""
+    order = get_object_or_404(Order, pk=pk, is_valid=True)
+    return render(request, 'order_detail.html', {
+        'order': order
     })

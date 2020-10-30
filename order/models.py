@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from django.db.models import F
 
 
 class Order(models.Model):
@@ -19,3 +20,9 @@ class Order(models.Model):
         db_table = 'order_list'
         verbose_name = verbose_name_plural = '所有订单信息'
         ordering = ['-created_time']
+
+    def update_number(self, count):
+        """更改订单产品的数量信息"""
+        self.number = F('number') - count
+        self.save()
+        self.refresh_from_db()

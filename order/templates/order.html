@@ -38,11 +38,15 @@
         <td>{{ order.number }}</td>
         <td>{{ order.deliver_time }}</td>
         <td>{{ order.salesperson }}</td>
-        <td><a class="layui-btn layui-btn-sm layui-btn-normal" href="">生产</a></td>
+        <td><a class="layui-btn layui-btn-sm layui-btn-normal" href="{% url 'order_detail' order.pk %}">生产</a></td>
       </tr>
       {% endfor %}
       </tbody>
     </table>
+  </div>
+  
+  <div id="prompt-box" style="display: none">
+    <input class="layui-input" type="text" name="number">
   </div>
 
   {% if page_obj %}
@@ -57,4 +61,26 @@
 {% endblock %}
 
 {% block footer %}
+{#  <script>#}
+{#      layui.use(['layer', 'jquery'], function () {#}
+{#          var layer = layui.layer#}
+{#          , $ = layui.jquery;#}
+{##}
+{#          $('#prompt').click(function (){#}
+{#              layer.prompt({#}
+{#                  formType: 2,#}
+{#                  value: '1',#}
+                  {#content: $('#prompt-box'),#}
+{#                  title: '请输入要生产的数量， 注意不能多余订单原来的数量',#}
+{#                  area: ['200px', '30px'] //自定义文本域宽高#}
+{#              }, function (value, index, elem) {#}
+{#                  if (value > $('#number'))#}
+{#                      alert('要生产的数量过大')#}
+{#                  else#}
+{#                      alert(value); //得到value#}
+{#                  layer.close(index);#}
+{#              });#}
+{#          })#}
+{#      });#}
+{#  </script>#}
 {% endblock %}

@@ -1,15 +1,91 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView
+
+from order.models import Order
+from product import models
+from product.models import Product
+from user.models import User
+from utils import constants
+
 
 def product_all(request):
-    """提起订单，开始生产"""
+    """所有待生产订单"""
+    user = get_object_or_404(User, name=request.session.get('user_name'))
+    product_list = user.products.filter(status=constants.PROD_BL)
+    paginator = Paginator(product_list, 10)
+    page = request.GET.get('page')
+    try:
+        Product = paginator.page(page)
+    except PageNotAnInteger:
+        Product = paginator.page(1)
+    except EmptyPage:
+        Product = paginator.page(paginator.num_pages)
 
     return render(request, 'product.html', {
-
+        'Product': Product
     })
 
 
-def production(request, pk):
-    return render(request, 'product.html', {
+def prod_add(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    user = get_object_or_404(User, name=request.session.get('user_name'))
+    # 拿到订单里的数量，先做判断
+    order_num = order.number
+    # 拿到要生产的数量
+    count = int(request.POST.get('owen_num'))
+    # 检验产品生产数量
+    if order_num < count:
+        return HttpResponse('数量不合法')
+    # 更新数量信息
+    order.update_number(count)
+    # 生成生产信息记录
+    # 如果已经添加到生产列表中，只把生产数量更新就行
+    try:
+        product = Product.objects.get(order=order, user=user, status=constants.PROD_BL)
+        count = product.owen_num + count
+        product.owen_num = count
+        product.save()
+    except Product.DoesNotExist:
+        Product.objects.create(
+            order=order,
+            user=user,
+            owen_num=count,
+        )
+    return HttpResponse('ok')
+
+
+class ProductStatusView(ListView):
+    models = Product
+    template_name = 'product_status.html'
+    context_object_name = 'products'
+
+
+class BLView(ProductStatusView):
+    def get_queryset(self):
+        return Product.objects.filter(status=constants.PROD_BL)
+
+
+class SCZView(ProductStatusView):
+    def get_queryset(self):
+        return Product.objects.filter(status=constants.PROD_SC)
+
+
+class DFHView(ProductStatusView):
+    def get_queryset(self):
+        return Product.objects.filter(status=constants.PROD_DFH)
+
+
+class DDWCView(ProductStatusView):
+    def get_queryset(self):
+        return Product.objects.filter(status=constants.PROD_WC)
+
+
+def product_seach(request):
+    # 所有订单
+
+    return render(request, 'prod_seach.html', {
 
     })
 

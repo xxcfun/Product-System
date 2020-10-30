@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>待生产订单信息</title>
+{% endblock %}
+
+{% block container %}
+  <blockquote class="layui-elem-quote layui-quote-nm">{{ order.customer }}：{{ order.good }}</blockquote>
+
+  <fieldset class="layui-elem-field">
+    <legend>订单详细内容</legend>
+    <div class="layui-field-box">
+      <form class="layui-form layui-col-md6" action="{% url 'prod_add' order.id %}" method="post">
+        <div class="layui-form-item">
+          <label class="layui-form-label">客户名称</label>
+          <div class="layui-input-block">
+            <input type="text" name="customer" disabled autocomplete="off" value="{{ order.customer }}"
+                   class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">产品名称</label>
+          <div class="layui-input-block">
+            <input type="text" name="good" disabled autocomplete="off" value="{{ order.good }}"
+                   class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">发货时间</label>
+          <div class="layui-input-block">
+            <input type="text" name="deliver_time" disabled autocomplete="off" value="{{ order.deliver_time }}"
+                   class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">数量</label>
+          <div class="layui-input-block">
+            <input type="text" name="number" disabled autocomplete="off" value="{{ order.number }}"
+                   class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">生产数量</label>
+          <div class="layui-input-block">
+            <input type="text" name="owen_num" required lay-verify="required" autocomplete="off"
+                   class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">归属业务</label>
+          <div class="layui-input-block">
+            <input type="text" name="salesperson" disabled autocomplete="off" value="{{ order.salesperson }}"
+                   class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">生产人员</label>
+          <div class="layui-input-block">
+            {% csrf_token %}
+            <input type="text" name="user" disabled autocomplete="off" value="{{ request.session.user_name }}"
+                   class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </fieldset>
+{% endblock %}
+
+{% block footer %}
+  <script>
+      //Demo
+      layui.use('form', function () {
+          var form = layui.form;
+      });
+  </script>
+{% endblock %}

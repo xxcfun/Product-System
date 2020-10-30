@@ -32,7 +32,8 @@
         <col width="25%">
         <col width="25%">
         <col width="10%">
-        <col width="20%">
+        <col width="10%">
+        <col width="10%">
         <col width="10%">
       </colgroup>
       <thead>
@@ -41,16 +42,18 @@
         <th>商品名称</th>
         <th>数量</th>
         <th>发货时间</th>
+        <th>状态</th>
         <th>操作</th>
       </tr>
       </thead>
       <tbody>
-      {% for product in Product %}
+      {% for product in products %}
       <tr>
         <td>{{ product.order.customer }}</td>
         <td>{{ product.order.good }}</td>
         <td>{{ product.owen_num }}</td>
         <td>{{ product.order.deliver_time }}</td>
+        <td>{{ product.get_status_display }}</td>
         <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="">确认</a></td>
       </tr>
       {% endfor %}
