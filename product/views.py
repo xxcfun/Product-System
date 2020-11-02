@@ -9,23 +9,11 @@ from user.models import User
 from utils import constants
 
 
-def product_all(request):
-    """所有待生产订单"""
-    user = get_object_or_404(User, name=request.session.get('user_name'))
-    product_list = user.products.all()
-    paginator = Paginator(product_list, 10)
-    page = request.GET.get('page')
-    try:
-        Product = paginator.page(page)
-    except PageNotAnInteger:
-        Product = paginator.page(1)
-    except EmptyPage:
-        Product = paginator.page(paginator.num_pages)
-
-    return render(request, 'product.html', {
-        'Product': Product
-
-    })
+class ProdView(ListView):
+    model = Product
+    template_name = 'product.html'
+    context_object_name = 'products'
+    paginate_by = 10
 
 
 def prod_add(request, pk):
@@ -117,9 +105,9 @@ def product_edit(request, pk):
 
 def product_seach(request):
     # 所有订单
-
+    products = Product.objects.all()
     return render(request, 'prod_seach.html', {
-
+        'products': products
     })
 
 # def prod_bl(request):

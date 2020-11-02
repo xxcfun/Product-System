@@ -1,11 +1,11 @@
 from django.urls import path
 
 from product import views
-from product.views import BLView, SCZView, DFHView, DDWCView
+from product.views import BLView, SCZView, DFHView, DDWCView, ProdView
 
 urlpatterns = [
     # 生产流程控制
-    path('', views.product_all, name='product_all'),
+    path('', ProdView.as_view(), name='product_all'),
     # 订单加入生产列表
     path('add/<int:pk>', views.prod_add, name='prod_add'),
     # 订单查询

@@ -7,13 +7,15 @@
 {% block container %}
 
   <blockquote class="layui-elem-quote" style="display: flex; justify-content: space-between;">
-    生产列表
+    生产控制列表
   </blockquote>
 
   <div>
     <fieldset class="layui-elem-field">
       <legend>订单状态</legend>
       <div class="layui-field-box">
+        <a style="display: inline; float: left;" class="layui-btn layui-btn-normal" href="{% url 'order_all' %}">待生产订单</a>
+        <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn layui-btn-primary" href="{% url 'product_bl' %}">备料</a>
         <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn layui-btn-primary" href="{% url 'product_scz' %}">生产中</a>
@@ -21,7 +23,6 @@
         <a class="layui-btn layui-btn-primary" href="{% url 'product_dfh' %}">待发货</a>
         <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn" href="{% url 'product_ddwc' %}">订单完成</a>
-        <a style="display: inline; float: right;" class="layui-btn layui-btn-normal" href="{% url 'product_all' %}">我的所有生产订单</a>
       </div>
     </fieldset>
   </div>

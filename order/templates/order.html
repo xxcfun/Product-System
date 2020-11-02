@@ -7,8 +7,25 @@
 {% block container %}
 
   <blockquote class="layui-elem-quote">
-    订单列表
+    生产控制列表
   </blockquote>
+
+  <div>
+    <fieldset class="layui-elem-field">
+      <legend>订单状态</legend>
+      <div class="layui-field-box">
+        <a style="display: inline; float: left;" class="layui-btn layui-btn-normal" href="{% url 'order_all' %}">待生产订单</a>
+        <i class="layui-icon layui-icon-right"></i>
+        <a class="layui-btn layui-btn-primary" href="{% url 'product_bl' %}">备料</a>
+        <i class="layui-icon layui-icon-right"></i>
+        <a class="layui-btn layui-btn-primary" href="{% url 'product_scz' %}">生产中</a>
+        <i class="layui-icon layui-icon-right"></i>
+        <a class="layui-btn layui-btn-primary" href="{% url 'product_dfh' %}">待发货</a>
+        <i class="layui-icon layui-icon-right"></i>
+        <a class="layui-btn" href="{% url 'product_ddwc' %}">订单完成</a>
+      </div>
+    </fieldset>
+  </div>
 
   <div>
     <table class="layui-table">
@@ -32,7 +49,7 @@
       </thead>
       <tbody>
       {% for order in orders %}
-      <tr style="color: dodgerblue">
+      <tr>
         <td>{{ order.customer }}</td>
         <td>{{ order.good }}</td>
         <td>{{ order.number }}</td>
@@ -61,26 +78,4 @@
 {% endblock %}
 
 {% block footer %}
-{#  <script>#}
-{#      layui.use(['layer', 'jquery'], function () {#}
-{#          var layer = layui.layer#}
-{#          , $ = layui.jquery;#}
-{##}
-{#          $('#prompt').click(function (){#}
-{#              layer.prompt({#}
-{#                  formType: 2,#}
-{#                  value: '1',#}
-                  {#content: $('#prompt-box'),#}
-{#                  title: '请输入要生产的数量， 注意不能多余订单原来的数量',#}
-{#                  area: ['200px', '30px'] //自定义文本域宽高#}
-{#              }, function (value, index, elem) {#}
-{#                  if (value > $('#number'))#}
-{#                      alert('要生产的数量过大')#}
-{#                  else#}
-{#                      alert(value); //得到value#}
-{#                  layer.close(index);#}
-{#              });#}
-{#          })#}
-{#      });#}
-{#  </script>#}
 {% endblock %}

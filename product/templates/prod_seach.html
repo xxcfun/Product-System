@@ -55,10 +55,11 @@
 
     <table class="layui-table">
       <colgroup>
-        <col width="25%">
-        <col width="25%">
+        <col width="20%">
+        <col width="20%">
         <col width="10%">
         <col width="20%">
+        <col width="10%">
         <col width="10%">
         <col width="10%">
       </colgroup>
@@ -70,16 +71,18 @@
         <th>发货时间</th>
         <th>订单状态</th>
         <th>业务员</th>
+        <th>生产人员</th>
       </tr>
       </thead>
       <tbody>
       {% for product in products %}
       <tr>
-        <td>{{ product.customer }}</td>
-        <td>{{ product.good }}</td>
-        <td>{{ product.number }}</td>
-        <td>{{ product.deliver_time }}</td>
+        <td>{{ product.order.customer }}</td>
+        <td>{{ product.order.good }}</td>
+        <td>{{ product.order.number }}</td>
+        <td>{{ product.order.deliver_time }}</td>
         <td><a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">{{ product.get_status_display }}</a></td>
+        <td>{{ product.order.salesperson }}</td>
         <td>{{ product.user }}</td>
       </tr>
       {% endfor %}
