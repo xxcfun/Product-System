@@ -11,7 +11,7 @@ urlpatterns = [
     # 生产过程查询(商务)
     path('seach/', views.prod_seach, name='prod_seach'),
     # 待生产订单
-    path('order', OrderView.as_view(), name='prod_order'),
+    path('order/', OrderView.as_view(), name='prod_order'),
     # 备料阶段
     path('material/', MaterialView.as_view(), name='prod_material'),
     # 生产中阶段

@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
@@ -10,6 +11,7 @@ from utils import constants
 
 
 class OrderView(ListView):
+    """抓取来的所有订单列表"""
     models = Order
     template_name = 'prod_order.html'
     context_object_name = 'orders'
@@ -20,7 +22,7 @@ class OrderView(ListView):
 
 
 def order_detail(request, pk):
-    """将订单加入生产列表"""
+    """订单列表详情，主要用来填写生产数量"""
     order = get_object_or_404(Order, pk=pk, is_valid=True)
     return render(request, 'prod_order_detail.html', {
         'order': order
@@ -62,11 +64,14 @@ def prod_add(request, pk):
     return redirect('prod_material')
 
 
+"""
+    这里主要是流程控制
+"""
 class ProductStatusView(ListView):
     """生产控制中的备料，生产，发货和订单完成"""
     models = Product
-    template_name = 'product_status.html'
-    context_object_name = 'products'
+    template_name = 'prod_status.html'
+    context_object_name = 'product_list'
     paginate_by = 10
 
 
@@ -114,6 +119,9 @@ def prod_edit(request, pk):
         prod.status = constants.PROD_WC
         prod.save()
         return redirect('prod_finish')
+"""
+    流程控制结束
+"""
 
 
 def prod_seach(request):

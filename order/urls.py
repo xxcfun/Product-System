@@ -1,8 +1,8 @@
 from django.urls import path
 
-from order.views import ProdOrderView
+from order import views
 
 urlpatterns = [
     # 所有生产订单
-    path('', ProdOrderView.as_view(), name='order_list'),
+    path('', views.order_list, name='order_list'),
 ]

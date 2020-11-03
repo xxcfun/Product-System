@@ -10,8 +10,7 @@ class Product(models.Model):
     order = models.ForeignKey(Order, verbose_name='生产订单', on_delete=models.CASCADE)
     user = models.ForeignKey(User, verbose_name='生产人员', related_name='products', on_delete=models.CASCADE)
     owen_num = models.IntegerField('生产数量')
-    status = models.SmallIntegerField('生产状态', choices=constants.PROD_STATUS,
-                                      default=constants.PROD_BL)
+    status = models.SmallIntegerField('生产状态', choices=constants.PROD_STATUS, default=constants.PROD_BL)
     created_time = models.DateTimeField('创建时间', auto_now_add=True)
     updated_time = models.DateTimeField('更新时间', auto_now=True)
 

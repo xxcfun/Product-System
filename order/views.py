@@ -5,12 +5,14 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from django.views.generic import ListView
 
+from order.models import Order
 from product.models import Product
 
 
-class ProdOrderView(ListView):
+def order_list(request):
     """所有生产订单"""
-    model = Product
-    template_name = 'production_order.html'
-    context_object_name = 'products'
-    paginate_by = 10
+    order_list = Order.objects.all()
+    print(order_list)
+    return render(request, 'production_order.html', {
+        'order_list': order_list
+    })

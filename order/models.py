@@ -11,6 +11,7 @@ class Order(models.Model):
     number = models.IntegerField('数量')
     salesperson = models.CharField('业务姓名', max_length=64)
     is_valid = models.BooleanField('订单是否存在', default=True)
+    is_deliver = models.BooleanField('订单是否已完成', default=False)
     created_time = models.DateTimeField('创建时间', auto_now_add=True)
 
     def __str__(self):
