@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',         # 用户模块
     'captcha',      # 验证码
-    'order',        # 订单模块
-    'product',      # 生产信息模块
+    'order',        # 业务模块 放业务那边的功能
+    'product',      # 生产模块 放生产那边的功能
+    'commerce',     # 商务模块 放商务那边的功能
 ]
 
 MIDDLEWARE = [
