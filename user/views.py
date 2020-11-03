@@ -50,10 +50,3 @@ def logout(request):
         return redirect('login')
     request.session.flush()
     return redirect('login')
-
-
-# def list(request):
-#     user_list = models.User.objects.filter(is_valid=True)
-#     return render(request, 'userlist.html', {
-#         'user_list': user_list
-#     })
