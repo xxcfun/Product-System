@@ -9,12 +9,22 @@ from user.models import User
 from utils import constants
 
 
-class ProdView(ListView):
-    """所有生产订单"""
-    model = Product
-    template_name = 'product.html'
-    context_object_name = 'products'
+class OrderView(ListView):
+    models = Order
+    template_name = 'prod_order.html'
+    context_object_name = 'orders'
     paginate_by = 10
+
+    def get_queryset(self):
+        return Order.objects.filter(is_valid=True).order_by('deliver_time')
+
+
+def order_detail(request, pk):
+    """将订单加入生产列表"""
+    order = get_object_or_404(Order, pk=pk, is_valid=True)
+    return render(request, 'prod_order_detail.html', {
+        'order': order
+    })
 
 
 def prod_add(request, pk):
@@ -49,7 +59,7 @@ def prod_add(request, pk):
             user=user,
             owen_num=count,
         )
-    return redirect('product_bl')
+    return redirect('prod_material')
 
 
 class ProductStatusView(ListView):
@@ -60,53 +70,53 @@ class ProductStatusView(ListView):
     paginate_by = 10
 
 
-class BLView(ProductStatusView):
+class MaterialView(ProductStatusView):
     """备料"""
     def get_queryset(self):
         user = self.request.session.get('user_id')
         return Product.objects.filter(status=constants.PROD_BL, user=user).order_by('-updated_time')
 
 
-class SCZView(ProductStatusView):
+class ProduceView(ProductStatusView):
     """生产中"""
     def get_queryset(self):
         user = self.request.session.get('user_id')
         return Product.objects.filter(status=constants.PROD_SC, user=user).order_by('-updated_time')
 
 
-class DFHView(ProductStatusView):
+class DeliverView(ProductStatusView):
     """待发货"""
     def get_queryset(self):
         user = self.request.session.get('user_id')
         return Product.objects.filter(status=constants.PROD_DFH, user=user).order_by('-updated_time')
 
 
-class DDWCView(ProductStatusView):
+class FinishView(ProductStatusView):
     """订单完成"""
     def get_queryset(self):
         user = self.request.session.get('user_id')
         return Product.objects.filter(status=constants.PROD_WC, user=user).order_by('-updated_time')
 
 
-def product_edit(request, pk):
+def prod_edit(request, pk):
     """状态修改"""
     prod = get_object_or_404(Product, pk=pk)
     prod_status = prod.status
     if prod_status == constants.PROD_BL:
         prod.status = constants.PROD_SC
         prod.save()
-        return redirect('product_scz')
+        return redirect('prod_produce')
     if prod_status == constants.PROD_SC:
         prod.status = constants.PROD_DFH
         prod.save()
-        return redirect('product_dfh')
+        return redirect('prod_deliver')
     if prod_status == constants.PROD_DFH:
         prod.status = constants.PROD_WC
         prod.save()
-        return redirect('product_ddwc')
+        return redirect('prod_finish')
 
 
-def product_seach(request):
+def prod_seach(request):
     # 订单筛选搜索
     products = Product.objects.all()
     return render(request, 'prod_seach.html', {

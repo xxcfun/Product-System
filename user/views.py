@@ -8,7 +8,7 @@ from user import models, forms
 def index(request):
     if not request.session.get('is_login', None):
         return redirect('login')
-    return redirect('order_all')
+    return redirect('order_list')
 
 
 def login(request):

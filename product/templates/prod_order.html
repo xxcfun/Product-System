@@ -14,15 +14,15 @@
     <fieldset class="layui-elem-field">
       <legend>订单状态</legend>
       <div class="layui-field-box">
-        <a style="display: inline; float: left;" class="layui-btn layui-btn-normal" href="{% url 'order_all' %}">待生产订单</a>
+        <a style="display: inline; float: left;" class="layui-btn layui-btn-normal" href="{% url 'prod_order' %}">待生产订单</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'product_bl' %}">备料</a>
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod_material' %}">备料</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'product_scz' %}">生产中</a>
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod_produce' %}">生产中</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'product_dfh' %}">待发货</a>
+        <a class="layui-btn layui-btn-primary" href="{% url 'prod_deliver' %}">待发货</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn" href="{% url 'product_ddwc' %}">订单完成</a>
+        <a class="layui-btn layui-btn-normal" href="{% url 'prod_finish' %}">订单完成</a>
       </div>
     </fieldset>
   </div>
@@ -55,7 +55,8 @@
         <td>{{ order.number }}</td>
         <td>{{ order.deliver_time }}</td>
         <td>{{ order.salesperson }}</td>
-        <td><a class="layui-btn layui-btn-sm layui-btn-normal" href="{% url 'order_detail' order.pk %}">生产</a></td>
+        <td><a class="layui-btn layui-btn-sm layui-btn-normal"
+               onclick="return addProd();" href="{% url 'order_detail' order.pk %}">生产</a></td>
       </tr>
       {% endfor %}
       </tbody>
@@ -78,4 +79,13 @@
 {% endblock %}
 
 {% block footer %}
+  <script type="text/javascript" language="JavaScript">
+    function addProd() {
+        if (confirm('请确认要生产的数量，按确认进行操作')){
+            return true;
+        } else {
+            return false;
+        }
+    }
+  </script>
 {% endblock %}

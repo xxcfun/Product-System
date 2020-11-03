@@ -59,9 +59,11 @@
         <td>{{ product.order.deliver_time }}</td>
         <td>{{ product.order.salesperson }}</td>
         <td>{{ product.user }}</td>
-        <td><a class="layui-btn-sm layui-btn layui-btn-danger" href="javascript:;">
-          {{ product.get_status_display }}
-        </a></td>
+        <td>
+          <a class="layui-btn-sm layui-btn layui-btn-danger" href="javascript:;">
+            {{ product.get_status_display }}
+          </a>
+        </td>
 {#        <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="">确认</a></td>#}
       </tr>
       {% endfor %}
