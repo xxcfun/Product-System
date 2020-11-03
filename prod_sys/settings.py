@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'captcha',      # 验证码
     'order',        # 订单模块
     'product',      # 生产信息模块
-    'record',       # 操作记录模块
 ]
 
 MIDDLEWARE = [
