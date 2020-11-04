@@ -3,7 +3,6 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
-
 from order.models import Order
 from product.models import Product
 from user.models import User
@@ -126,7 +125,11 @@ def prod_edit(request, pk):
 
 def prod_seach(request):
     # 订单筛选搜索
-    products = Product.objects.all()
+    customer = request.POST.get('customer', '')
+    good = request.POST.get('good', '')
+    status = request.POST.get('status', '')
+
+
     return render(request, 'prod_seach.html', {
-        'products': products
+
     })

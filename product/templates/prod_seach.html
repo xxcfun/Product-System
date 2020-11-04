@@ -11,22 +11,23 @@
   </blockquote>
 
   <div>
-    <form class="layui-form" action="" method="post">
+    <form class="layui-form" action="." method="post">
+      {% csrf_token %}
       <fieldset class="layui-elem-field">
         <legend>搜索内容</legend>
-        <div class="layui-field-box">
+        <div class="layui-field-box layui-col-md6">
           <div class="layui-form-item">
             <label class="layui-form-label">客户名称</label>
             <div class="layui-input-block">
               <input type="text" name="customer" placeholder="按客户名称进行搜索" autocomplete="off"
-                     class="layui-input">
+                     class="layui-input" value="">
             </div>
           </div>
           <div class="layui-form-item">
             <label class="layui-form-label">货品名称</label>
             <div class="layui-input-block">
               <input type="text" name="good" placeholder="按货品名称进行搜索" autocomplete="off"
-                     class="layui-input">
+                     class="layui-input" value="">
             </div>
           </div>
           <div class="layui-form-item">
@@ -105,12 +106,6 @@
       //Demo
       layui.use('form', function () {
           var form = layui.form;
-
-          //监听提交
-          form.on('submit(formDemo)', function (data) {
-              layer.msg(JSON.stringify(data.field));
-              return false;
-          });
       });
   </script>
 {#  <script>#}
