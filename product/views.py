@@ -1,7 +1,5 @@
 import datetime
 
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
@@ -80,6 +78,7 @@ class ProductStatusView(ListView):
         context = super().get_context_data(**kwargs)
         """添加上下文信息，将url拆分，拿到具体的每个状态"""
         context['url'] = self.request.get_full_path().split('/')[2]
+        # 用get_full_path()来获取url地址，split分割url，然后取第三个字符串
         return context
 
 
@@ -137,8 +136,6 @@ def prod_seach(request):
     customer = request.POST.get('customer', '')
     good = request.POST.get('good', '')
     status = request.POST.get('status', '')
-
-
     return render(request, 'prod_seach.html', {
 
     })

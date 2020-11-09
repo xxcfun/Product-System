@@ -1,5 +1,5 @@
 import datetime
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
 from django.views.generic import ListView
@@ -15,7 +15,15 @@ class OrderListView(ListView):
 
     def get_queryset(self):
         now_day = datetime.datetime.now().date()
-        return Order.objects.filter(created_time=now_day)
+        return Order.objects.filter(created_time=now_day, is_valid=True)
+
+
+def order_del(request, pk):
+    order = get_object_or_404(Order, pk=pk, is_valid=True)
+    order.is_valid = False
+    order.save()
+    return redirect('order_list')
+
 
 # def order_list(request):
 #     """所有生产订单"""

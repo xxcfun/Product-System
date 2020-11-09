@@ -55,23 +55,25 @@
     <table class="layui-table">
       <colgroup>
         <col width="15%">
-        <col width="15%">
-        <col width="10%">
-        <col width="10%">
-        <col width="10%">
-        <col width="10%">
-        <col width="10%">
-        <col width="10%">
+        <col width="20%">
+        <col width="">
+        <col width="5%">
+        <col width="8%">
+        <col width="8%">
+        <col width="8%">
+        <col width="8%">
+        <col width="5%">
       </colgroup>
       <thead>
       <tr>
         <th>客户名称</th>
-        <th>商品名称</th>
+        <th>产品型号</th>
+        <th>料号信息</th>
         <th>数量</th>
-        <th>发货时间</th>
         <th>状态</th>
-        <th>归属业务</th>
-        <th>生产人员</th>
+        <th>业务负责人</th>
+        <th>生产负责人</th>
+        <th>发货时间</th>
         <th>操作</th>
       </tr>
       </thead>
@@ -80,11 +82,12 @@
       <tr>
         <td style="color: #01AAED">{{ product.order.customer }}</td>
         <td>{{ product.order.good }}</td>
+        <td>{{ product.order.remark }}</td>
         <td>{{ product.owen_num }}</td>
-        <td>{{ product.order.deliver_time }}</td>
         <td>{{ product.get_status_display }}</td>
         <td>{{ product.order.salesperson }}</td>
         <td>{{ product.user }}</td>
+        <td>{{ product.deliver_time|slice:"5:"|default_if_none:'' }}</td>
         {% if product.status == 4 %}
           <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:;">生产已完成</a></td>
         {% elif product.status == 3 %}
