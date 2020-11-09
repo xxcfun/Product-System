@@ -1,3 +1,5 @@
+import datetime
+
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.http import HttpResponse
@@ -17,7 +19,8 @@ class OrderView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Order.objects.filter(is_valid=True).order_by('deliver_time')
+        now_day = datetime.datetime.now().date()
+        return Order.objects.filter(is_valid=True, created_time=now_day).order_by('deliver_time')
 
 
 def order_detail(request, pk):
@@ -33,7 +36,7 @@ def prod_add(request, pk):
     order = get_object_or_404(Order, pk=pk)
     user = get_object_or_404(User, name=request.session.get('user_name'))
     # 拿到订单里的数量，先做判断
-    order_num = order.number
+    order_num = order.sumnumber
     # 拿到要生产的数量
     count = int(request.POST.get('owen_num'))
     # 检验产品生产数量
@@ -43,7 +46,7 @@ def prod_add(request, pk):
     order.update_number(count)
 
     # 将数量为0的订单改为不启用状态
-    if order.number == 0:
+    if order.sumnumber == 0:
         order.is_valid = False
         order.save()
 
@@ -72,6 +75,12 @@ class ProductStatusView(ListView):
     template_name = 'prod_status.html'
     context_object_name = 'product_list'
     paginate_by = 10
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        """添加上下文信息，将url拆分，拿到具体的每个状态"""
+        context['url'] = self.request.get_full_path().split('/')[2]
+        return context
 
 
 class MaterialView(ProductStatusView):

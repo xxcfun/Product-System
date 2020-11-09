@@ -16,13 +16,37 @@
       <div class="layui-field-box">
         <a style="display: inline; float: left;" class="layui-btn layui-btn-primary" href="{% url 'prod_order' %}">待生产订单</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'prod_material' %}">备料</a>
+        <a class="layui-btn
+          {% if url == 'material' %}
+          layui-btn-normal
+          {% else %}
+          layui-btn-primary
+          {% endif %}
+          " href="{% url 'prod_material' %}">备料</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'prod_produce' %}">生产中</a>
+        <a class="layui-btn
+          {% if url == 'produce' %}
+          layui-btn-normal
+          {% else %}
+          layui-btn-primary
+          {% endif %}
+          " href="{% url 'prod_produce' %}">生产中</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'prod_deliver' %}">待发货</a>
+        <a class="layui-btn
+          {% if url == 'deliver' %}
+          layui-btn-normal
+          {% else %}
+          layui-btn-primary
+          {% endif %}
+          " href="{% url 'prod_deliver' %}">待发货</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'prod_finish' %}">订单完成</a>
+        <a class="layui-btn
+          {% if url == 'finish' %}
+          layui-btn-normal
+          {% else %}
+          layui-btn-primary
+          {% endif %}
+          " href="{% url 'prod_finish' %}">订单完成</a>
       </div>
     </fieldset>
   </div>
@@ -54,7 +78,7 @@
       <tbody>
       {% for product in product_list %}
       <tr>
-        <td>{{ product.order.customer }}</td>
+        <td style="color: #01AAED">{{ product.order.customer }}</td>
         <td>{{ product.order.good }}</td>
         <td>{{ product.owen_num }}</td>
         <td>{{ product.order.deliver_time }}</td>

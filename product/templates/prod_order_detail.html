@@ -28,14 +28,14 @@
         <div class="layui-form-item">
           <label class="layui-form-label">发货时间</label>
           <div class="layui-input-block">
-            <input type="text" name="deliver_time" disabled autocomplete="off" value="{{ order.deliver_time }}"
+            <input type="text" name="deliver_time" disabled autocomplete="off" value="{{ order.deliver_time|default_if_none:'未注明' }}"
                    class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">数量</label>
           <div class="layui-input-block">
-            <input type="text" name="number" disabled autocomplete="off" value="{{ order.number }}"
+            <input type="text" name="number" disabled autocomplete="off" value="{{ order.sumnumber }}"
                    class="layui-input">
           </div>
         </div>

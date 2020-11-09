@@ -6,7 +6,7 @@ from order.models import Order
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'good', 'deliver_time', 'number',
+    list_display = ('customer', 'good', 'deliver_time', 'sumnumber',
                     'salesperson', 'is_valid', 'created_time')
     list_per_page = 10
     ordering = ['-created_time']
