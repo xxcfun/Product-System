@@ -20,6 +20,7 @@ from user import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('produce_bigscreen', views.bigscreen, name='bigscreen'),
     path('admin/', admin.site.urls),
     path('order/', include('order.urls')),
     path('product/', include('product.urls')),

@@ -136,6 +136,9 @@ def prod_seach(request):
     customer = request.POST.get('customer', '')
     good = request.POST.get('good', '')
     status = request.POST.get('status', '')
+    if customer:
+        products = Product.order.objects.filter(customer__name=customer)
+    products = Product.objects.all()
     return render(request, 'prod_seach.html', {
-
+        'products': products
     })

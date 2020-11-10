@@ -18,7 +18,7 @@
         <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn
           {% if url == 'material' %}
-          layui-btn-normal
+          layui-btn-warm
           {% else %}
           layui-btn-primary
           {% endif %}
@@ -26,7 +26,7 @@
         <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn
           {% if url == 'produce' %}
-          layui-btn-normal
+          layui-btn-warm
           {% else %}
           layui-btn-primary
           {% endif %}
@@ -34,11 +34,11 @@
         <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn
           {% if url == 'deliver' %}
-          layui-btn-normal
+          layui-btn-warm
           {% else %}
           layui-btn-primary
           {% endif %}
-          " href="{% url 'prod_deliver' %}">生产完成</a>
+          " href="{% url 'prod_deliver' %}">待发货</a>
         <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn
           {% if url == 'finish' %}
@@ -47,6 +47,8 @@
           layui-btn-primary
           {% endif %}
           " href="{% url 'prod_finish' %}">订单完成</a>
+        <a class="layui-btn layui-btn-normal" style="float: right"
+           href="{% url 'prod_order' %}">拉取新订单</a>
       </div>
     </fieldset>
   </div>
@@ -87,9 +89,9 @@
         <td>{{ product.get_status_display }}</td>
         <td>{{ product.order.salesperson }}</td>
         <td>{{ product.user }}</td>
-        <td>{{ product.deliver_time|slice:"5:"|default_if_none:'' }}</td>
+        <td>{{ product.order.deliver_time|slice:"5:"|default_if_none:'未注明' }}</td>
         {% if product.status == 4 %}
-          <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:;">生产已完成</a></td>
+          <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:;">订单完成</a></td>
         {% elif product.status == 3 %}
           <td><a class="layui-btn layui-btn-warm layui-btn-sm"
                onclick="return editProd();" href="{% url 'prod_edit' product.id %}">去发货</a></td>

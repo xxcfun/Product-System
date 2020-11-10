@@ -11,6 +11,13 @@ def index(request):
     return redirect('order_list')
 
 
+def bigscreen(request):
+    pass
+    return render(request, 'bigscreen.html', {
+
+    })
+
+
 def login(request):
     if request.session.get('is_login', None):   # 不允许重复登录
         return redirect('index')
