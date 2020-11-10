@@ -22,7 +22,7 @@
           {% else %}
           layui-btn-primary
           {% endif %}
-          " href="{% url 'prod_material' %}">备料</a>
+          " href="{% url 'prod_material' %}">备料中</a>
         <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn
           {% if url == 'produce' %}
@@ -38,7 +38,7 @@
           {% else %}
           layui-btn-primary
           {% endif %}
-          " href="{% url 'prod_deliver' %}">待发货</a>
+          " href="{% url 'prod_deliver' %}">生产完成</a>
         <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn
           {% if url == 'finish' %}

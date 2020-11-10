@@ -23,12 +23,3 @@ def order_del(request, pk):
     order.is_valid = False
     order.save()
     return redirect('order_list')
-
-
-# def order_list(request):
-#     """所有生产订单"""
-#     now_day = datetime.datetime.now().date()
-#     order_list = Order.objects.filter(created_time=now_day)
-#     return render(request, 'production_order.html', {
-#         'order_list': order_list
-#     })

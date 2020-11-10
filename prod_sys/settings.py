@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'captcha',      # 验证码
     'order',        # 业务模块 放业务那边的功能
     'product',      # 生产模块 放生产那边的功能
-    'commerce',     # 商务模块 放商务那边的功能
+    # 'commerce',     # 商务模块 放商务那边的功能
 ]
 
 MIDDLEWARE = [
