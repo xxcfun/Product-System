@@ -13,17 +13,27 @@
     <div class="layui-logo">生产MAS管理系统</div>
     <!-- 头部区域（可配合layui已有的水平导航） -->
     <ul class="layui-nav layui-layout-left">
+      {% if request.session.user_power == 1 %}
+      <li class="layui-nav-item"><a href="{% url 'order_list' %}">所有订单</a></li>
+      {% elif request.session.user_power == 2 %}
+      <li class="layui-nav-item"><a href="{% url 'order_list' %}">所有订单</a></li>
+      <li class="layui-nav-item"><a href="{% url 'prod_order' %}">我的生产控制台</a></li>
+      {% elif request.session.user_power == 3 %}
+      <li class="layui-nav-item"><a href="{% url 'order_list' %}">所有订单</a></li>
+      <li class="layui-nav-item"><a href="{% url 'prod_seach' %}">订单搜索</a></li>
+      {% elif request.session.user_power == 4 %}
       <li class="layui-nav-item"><a href="{% url 'order_list' %}">所有订单</a></li>
       <li class="layui-nav-item"><a href="{% url 'prod_order' %}">我的生产控制台</a></li>
       <li class="layui-nav-item"><a href="{% url 'prod_seach' %}">订单搜索</a></li>
       <li class="layui-nav-item">
         <a href="javascript:;">操作日志</a>
         <dl class="layui-nav-child">
-          <dd><a href="">邮件管理</a></dd>
-          <dd><a href="">消息管理</a></dd>
-          <dd><a href="">授权管理</a></dd>
+            <dd><a href="">邮件管理</a></dd>
+            <dd><a href="">消息管理</a></dd>
+            <dd><a href="">授权管理</a></dd>
         </dl>
       </li>
+      {% endif %}
     </ul>
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">

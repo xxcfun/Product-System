@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from utils import constants
 
 
 class User(models.Model):
@@ -8,7 +9,7 @@ class User(models.Model):
     password = models.CharField('密码', max_length=256)
     is_valid = models.BooleanField('是否有效', default=True)
     created_time = models.DateTimeField('创建时间', auto_now_add=True)
-    # power = models.ManyToManyField(Power, verbose_name='权限')
+    power = models.SmallIntegerField('权限', choices=constants.POWER_STATUS, default=constants.POWER_YW)
 
     def __str__(self):
         return self.name

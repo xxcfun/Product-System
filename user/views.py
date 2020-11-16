@@ -36,6 +36,7 @@ def login(request):
                 request.session['is_login'] = True
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
+                request.session['user_power'] = user.power
                 return redirect('index')
             else:
                 message = '密码不正确！'
