@@ -8,10 +8,10 @@
 
   <blockquote class="layui-elem-quote" style="display: flex; justify-content: space-between;">
     生产订单列表
-    <form style="display: flex; justify-content: flex-end;" action="." method="get">
-      {% csrf_token %}
-      <a href="{% url 'order_mine' %}">我的所有订单</a>
-    </form>
+
+    {% if request.session.user_power == 1 %}
+    <a href="{% url 'order_mine' %}" style="display: flex; justify-content: flex-end;">我的所有订单</a>
+    {% endif %}
   </blockquote>
 {#  <div>#}
 {#    <fieldset class="layui-elem-field">#}
