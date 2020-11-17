@@ -23,3 +23,12 @@ def order_del(request, pk):
     order.is_valid = False
     order.save()
     return redirect('order_list')
+
+
+def order_mine(request):
+    now_day = datetime.datetime.now().date()
+    name = request.session.get('user_name')
+    order_list = Order.objects.filter(salesperson=name, created_time=now_day, is_valid=True)
+    return render(request, 'production_order.html', {
+        'order_list': order_list
+    })
