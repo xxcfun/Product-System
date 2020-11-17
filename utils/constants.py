@@ -13,8 +13,10 @@ PROD_STATUS = {
 POWER_YW = 1
 POWER_SC = 2
 POWER_SW = 3
+POWER_JL = 4
 POWER_STATUS = {
         (POWER_YW, '业务'),
         (POWER_SC, '生产'),
         (POWER_SW, '商务'),
+        (POWER_JL, '经理'),
 }
