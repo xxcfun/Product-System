@@ -1,0 +1,8 @@
+.mine {
+    height: 100vh;
+    width: 100vw;
+}
+.context {
+    display: flex;
+    justify-content: center;
+}

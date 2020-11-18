@@ -1,17 +1,19 @@
-from django.shortcuts import render, redirect
-
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from user import models, forms
+from user.models import User
 
 
 def index(request):
+    # 首页，重定向到订单页
     if not request.session.get('is_login', None):
         return redirect('login')
     return redirect('order_list')
 
 
 def bigscreen(request):
+    # 大屏
     pass
     return render(request, 'bigscreen.html', {
 
@@ -58,3 +60,18 @@ def logout(request):
         return redirect('login')
     request.session.flush()
     return redirect('login')
+
+
+def mine(request):
+    # 个人中心模块
+    pk = request.session.get('user_id')
+    user = get_object_or_404(User, pk=pk, is_valid=True)
+    if request.method == 'POST':
+        editpwd = request.POST.get('editpwd')
+        checkpwd = request.POST.get('checkpwd')
+        if editpwd != checkpwd:
+            message = '两次密码不一致'
+        else:
+            User.objects.filter(pk=pk).update(password=checkpwd)
+            message = '修改成功'
+    return render(request, 'mine.html', locals())
