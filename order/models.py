@@ -3,6 +3,8 @@ from django.db import models
 # Create your models here.
 from django.db.models import F
 
+from utils import constants
+
 
 class Order(models.Model):
     sn = models.CharField('订单编号', max_length=32, blank=True, null=True, unique=True)
@@ -14,7 +16,7 @@ class Order(models.Model):
     created_time = models.CharField('创建时间', max_length=128)
     deliver_time = models.CharField('预计发货时间', max_length=128, blank=True, null=True)
     is_valid = models.BooleanField('订单是否存在', default=True)
-    is_deliver = models.BooleanField('订单是否已完成', default=False)
+    order_status = models.SmallIntegerField('订单状态', choices=constants.ORDER_STATUS, default=constants.ORDER_DSC)
 
     def __str__(self):
         return "客户名称：" + self.customer + "|" + "货品名称：" + self.good
@@ -32,4 +34,16 @@ class Order(models.Model):
             self.is_valid = False
             self.save()
             self.refresh_from_db()
+        self.refresh_from_db()
+
+    def update_status_scz(self):
+        """当订单开始生产时，状态改为生产中"""
+        self.order_status = constants.ORDER_SCZ
+        self.save()
+        self.refresh_from_db()
+
+    def update_status_dfh(self):
+        """当生产结束了，状态改为待发货"""
+        self.order_status = constants.ORDER_DFH
+        self.save()
         self.refresh_from_db()

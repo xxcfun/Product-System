@@ -35,7 +35,7 @@
         <col width="15%">
         <col width="20%">
         <col width="">
-        <col width="5%">
+        <col width="7%">
         <col width="6%">
         <col width="6%">
         <col width="6%">
@@ -48,7 +48,7 @@
         <th>客户名称</th>
         <th>产品型号</th>
         <th>料号信息</th>
-        <th>数量</th>
+        <th>待生产数量</th>
         <th>业务人员</th>
         <th>创建时间</th>
         <th>发货时间</th>
@@ -67,17 +67,7 @@
         <td>{{ order.salesperson }}</td>
         <td>{{ order.created_time|slice:"5:" }}</td>
         <td>{{ order.deliver_time|slice:"5:"|default_if_none:'' }}</td>
-        <td>
-          {% if order.is_deliver == 0 %}
-          <a class="layui-btn-sm layui-btn layui-btn-primary" href="javascript:;">
-            生产中
-          </a>
-          {% elif order.is_deliver == 1 %}
-          <a class="layui-btn-sm layui-btn layui-btn-primary" href="javascript:;">
-            已发货
-          </a>
-          {% endif %}
-        </td>
+        <td><a class="layui-btn layui-btn-sm layui-btn-primary">{{ order.get_order_status_display }}</a></td>
         <td><a class="layui-btn layui-btn-danger layui-btn-sm"
                onclick="return deleteOrder();" href="{% url 'order_del' order.id %}">删除</a></td>
       </tr>
@@ -106,5 +96,9 @@
               return false;
           }
       }
+      function myrefresh() {
+          window.location.reload();
+      }
+      setTimeout('myrefresh()', 5000); // 指定5秒刷新一次
   </script>
 {% endblock %}

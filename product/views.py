@@ -3,6 +3,7 @@ import datetime
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
+
 from order.models import Order
 from product.models import Product
 from user.models import User
@@ -43,10 +44,14 @@ def prod_add(request, pk):
     # 更新数量信息
     order.update_number(count)
 
-    # 将数量为0的订单改为不启用状态
-    if order.sumnumber == 0:
-        order.is_valid = False
-        order.save()
+    # 更新订单的状态信息
+    """业务拉取订单，开始生产时，该订单状态改为生产中"""
+    order.update_status_scz()
+
+    # # 将数量为0的订单改为不启用状态
+    # if order.sumnumber == 0:
+    #     order.is_valid = False
+    #     order.save()
 
     # 生成生产信息记录
     # 如果已经添加到生产列表中，只把生产数量更新就行
@@ -121,6 +126,7 @@ def prod_edit(request, pk):
     if prod_status == constants.PROD_SC:
         prod.status = constants.PROD_DFH
         prod.save()
+        prod.order.update_status_dfh()
         return redirect('prod_deliver')
     if prod_status == constants.PROD_DFH:
         prod.status = constants.PROD_WC
