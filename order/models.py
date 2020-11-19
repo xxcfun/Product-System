@@ -7,6 +7,7 @@ from utils import constants
 
 
 class Order(models.Model):
+    # 从sqlserver中抓取的信息
     sn = models.CharField('订单编号', max_length=32, blank=True, null=True, unique=True)
     customer = models.CharField('客户名称', max_length=64)
     good = models.CharField('产品名称', max_length=128)
@@ -15,7 +16,15 @@ class Order(models.Model):
     salesperson = models.CharField('业务姓名', max_length=64)
     created_time = models.CharField('创建时间', max_length=128)
     deliver_time = models.CharField('预计发货时间', max_length=128, blank=True, null=True)
+    # 下面为系统自定义的字段
+    # 当生产结束时，订单转为不存在，不在界面上显示
     is_valid = models.BooleanField('订单是否存在', default=True)
+    """
+    读取sqlserver中的数据存入数据库时，状态默认为待生产
+    生产开始生产时，状态改为生产中
+    待该订单全部生产完成时，改为待出货
+    所有出货完成后，将is_valid字段改为false
+    """
     order_status = models.SmallIntegerField('订单状态', choices=constants.ORDER_STATUS, default=constants.ORDER_DSC)
 
     def __str__(self):
@@ -45,5 +54,11 @@ class Order(models.Model):
     def update_status_dfh(self):
         """当生产结束了，状态改为待发货"""
         self.order_status = constants.ORDER_DFH
+        self.save()
+        self.refresh_from_db()
+
+    def update_status_ddwc(self):
+        """当发货完成时，订单完成，将is_valid字段改为false"""
+        self.is_valid = False
         self.save()
         self.refresh_from_db()

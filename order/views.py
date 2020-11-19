@@ -18,6 +18,13 @@ class OrderListView(ListView):
         return Order.objects.filter(created_time=now_day, is_valid=True)
 
 
+class OrderFinishView(OrderListView):
+    template_name = 'production_finish.html'
+    def get_queryset(self):
+        now_day = datetime.datetime.now().date()
+        return Order.objects.filter(created_time=now_day, is_valid=False)
+
+
 def order_del(request, pk):
     order = get_object_or_404(Order, pk=pk, is_valid=True)
     order.is_valid = False

@@ -119,18 +119,31 @@ def prod_edit(request, pk):
     """状态修改"""
     prod = get_object_or_404(Product, pk=pk)
     prod_status = prod.status
+    """
+    备料-生产中
+    """
     if prod_status == constants.PROD_BL:
         prod.status = constants.PROD_SC
         prod.save()
         return redirect('prod_produce')
+    """
+    生产中-待发货
+    只有所有订单都生产完毕才能点发货
+    """
     if prod_status == constants.PROD_SC:
+
         prod.status = constants.PROD_DFH
         prod.save()
         prod.order.update_status_dfh()
         return redirect('prod_deliver')
+    """
+    待发货-订单完成
+    """
     if prod_status == constants.PROD_DFH:
         prod.status = constants.PROD_WC
         prod.save()
+        if prod.order.sumnumber == 0:
+            prod.order.update_status_ddwc()
         return redirect('prod_finish')
 """
     流程控制结束
