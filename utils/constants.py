@@ -1,13 +1,17 @@
-ORDER_DSC = 1
-ORDER_SCZ = 2
-ORDER_DFH = 3
+# 业务订单状态
+ORDER_BLZ = 1
+ORDER_DSC = 2
+ORDER_SCZ = 3
+ORDER_DFH = 4
 ORDER_STATUS = {
+        (ORDER_BLZ, '备料中'),
         (ORDER_DSC, '待生产'),
         (ORDER_SCZ, '生产中'),
         (ORDER_DFH, '待发货'),
 }
 
 
+# 生产订单状态
 PROD_BL = 1
 PROD_SC = 2
 PROD_DFH = 3
@@ -20,6 +24,7 @@ PROD_STATUS = {
 }
 
 
+# 用户的权限
 POWER_YW = 1
 POWER_SC = 2
 POWER_SW = 3

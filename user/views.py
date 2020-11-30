@@ -13,7 +13,7 @@ def index(request):
 
 
 def bigscreen(request):
-    # 大屏
+    # 大屏 目前先放着，不开发
     pass
     return render(request, 'bigscreen.html', {
 
@@ -50,6 +50,7 @@ def login(request):
 
 
 def register(request):
+    # 注册预留，目前没用
     pass
     return render(request, 'register.html')
 
