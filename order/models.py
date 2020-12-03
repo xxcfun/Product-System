@@ -7,8 +7,9 @@ from utils import constants
 
 
 class Order(models.Model):
-    # 从sqlserver中抓取的信息
-    sn = models.CharField('订单编号', max_length=32, blank=True, null=True, unique=True)
+    # 从sqlserver中抓取的信息 所有订单列表
+    order_id = models.CharField('订单编号', max_length=6, blank=True, null=True, unique=True)
+    # sn = models.CharField('订单编号', max_length=32, unique=True)
     customer = models.CharField('客户名称', max_length=64)
     good = models.CharField('产品名称', max_length=128)
     remark = models.CharField('料号信息', max_length=256, blank=True, null=True)
@@ -31,7 +32,7 @@ class Order(models.Model):
         return "客户名称：" + self.customer + "|" + "货品名称：" + self.good
 
     class Meta:
-        db_table = 'order'
+        db_table = 'orders'
         verbose_name = verbose_name_plural = '所有订单信息'
         ordering = ['-created_time']
 
@@ -64,7 +65,13 @@ class Order(models.Model):
         self.refresh_from_db()
 
 
-# class OrderList(models.Model):
-#
-#
-#     class Meta
+class OrderList(models.Model):
+    """所有订单的配件信息"""
+    order_list_id = models.CharField('配件单编号', max_length=6, blank=True, null=True)
+    good = models.CharField('产品名称', max_length=128)
+    good_number = models.IntegerField('数量')
+
+    class Meta:
+        db_table = 'order_list'
+        verbose_name_plural = verbose_name = '所有订单配件信息'
+        ordering = ['order_list_id']
