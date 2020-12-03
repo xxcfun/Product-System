@@ -18,6 +18,6 @@ class Product(models.Model):
         return self.status
 
     class Meta:
-        db_table = 'product_list'
+        db_table = 'product'
         verbose_name = verbose_name_plural = '所有生产信息'
         ordering = ['-created_time']

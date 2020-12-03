@@ -31,7 +31,7 @@ class Order(models.Model):
         return "客户名称：" + self.customer + "|" + "货品名称：" + self.good
 
     class Meta:
-        db_table = 'order_list'
+        db_table = 'order'
         verbose_name = verbose_name_plural = '所有订单信息'
         ordering = ['-created_time']
 
@@ -62,3 +62,9 @@ class Order(models.Model):
         self.is_valid = False
         self.save()
         self.refresh_from_db()
+
+
+# class OrderList(models.Model):
+#
+#
+#     class Meta
