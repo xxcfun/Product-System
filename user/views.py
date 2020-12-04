@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
+from django.views.generic import TemplateView, ListView
+
 from user import models, forms
 from user.models import User
 
@@ -76,3 +78,10 @@ def mine(request):
             User.objects.filter(pk=pk).update(password=checkpwd)
             message = '修改成功'
     return render(request, 'mine.html', locals())
+
+
+class LisView(TemplateView):
+    pass
+
+class View(ListView):
+    pass

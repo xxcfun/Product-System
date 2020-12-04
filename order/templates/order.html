@@ -17,6 +17,7 @@
   <div>
     <table class="layui-table" lay-skin="row">
       <colgroup>
+        <col>
         <col width="20%">
         <col width="20%">
         <col width="">
@@ -29,6 +30,7 @@
       </colgroup>
       <thead>
       <tr>
+        <th></th>
         <th>客户名称</th>
         <th>产品型号</th>
         <th>备注信息</th>
@@ -43,6 +45,7 @@
       <tbody>
       {% for order in order_list %}
       <tr>
+        <td style="display: flex; justify-content: center;">{{ forloop.counter }}</td>
         <td>{{ order.customer }}</td>
         <td>{{ order.good }} 等商品</td>
         <td>{{ order.remark }}</td>
