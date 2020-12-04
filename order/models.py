@@ -8,14 +8,14 @@ from utils import constants
 
 class Order(models.Model):
     # 从sqlserver中抓取的信息 所有订单列表
-    order_id = models.CharField('订单编号', max_length=6, blank=True, null=True, unique=True)
-    # sn = models.CharField('订单编号', max_length=32, unique=True)
+    order_id = models.IntegerField('订单编号', unique=True, primary_key=True)
     customer = models.CharField('客户名称', max_length=64)
     good = models.CharField('产品名称', max_length=128)
     remark = models.CharField('料号信息', max_length=256, blank=True, null=True)
-    sumnumber = models.IntegerField('数量')
+    sumnumber = models.IntegerField('数量')   # 无意义
     salesperson = models.CharField('业务姓名', max_length=64)
     created_time = models.CharField('创建时间', max_length=128)
+    order_date = models.CharField('时间', max_length=16, blank=True, null=True)
     deliver_time = models.CharField('预计发货时间', max_length=128, blank=True, null=True)
     # 下面为系统自定义的字段
     # 当生产结束时，订单转为不存在，不在界面上显示
@@ -34,7 +34,7 @@ class Order(models.Model):
     class Meta:
         db_table = 'orders'
         verbose_name = verbose_name_plural = '所有订单信息'
-        ordering = ['-created_time']
+        ordering = ['-order_id']
 
     def update_number(self, count):
         """更改订单产品的数量信息"""
@@ -67,11 +67,12 @@ class Order(models.Model):
 
 class OrderList(models.Model):
     """所有订单的配件信息"""
-    order_list_id = models.CharField('配件单编号', max_length=6, blank=True, null=True)
+    list_id = models.IntegerField('订单配件id', unique=True, primary_key=True)
+    order_list_id = models.ForeignKey(Order, verbose_name='订单', on_delete=models.CASCADE)
     good = models.CharField('产品名称', max_length=128)
     good_number = models.IntegerField('数量')
 
     class Meta:
         db_table = 'order_list'
-        verbose_name_plural = verbose_name = '所有订单配件信息'
-        ordering = ['order_list_id']
+        verbose_name_plural = verbose_name = '订单配件表'
+        ordering = ['list_id']

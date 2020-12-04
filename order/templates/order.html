@@ -13,29 +13,14 @@
     <a href="{% url 'order_mine' %}" style="display: flex; justify-content: flex-end;">我的所有订单</a>
     {% endif %}
   </blockquote>
-{#  <div>#}
-{#    <fieldset class="layui-elem-field">#}
-{#      <legend>订单状态</legend>#}
-{#      <div class="layui-field-box">#}
-{#        <a class="layui-btn layui-btn-primary" href="{% url 'product_bl' %}">备料</a>#}
-{#        <i class="layui-icon layui-icon-right"></i>#}
-{#        <a class="layui-btn layui-btn-primary" href="{% url 'product_scz' %}">生产中</a>#}
-{#        <i class="layui-icon layui-icon-right"></i>#}
-{#        <a class="layui-btn layui-btn-primary" href="{% url 'product_dfh' %}">待发货</a>#}
-{#        <i class="layui-icon layui-icon-right"></i>#}
-{#        <a class="layui-btn" href="{% url 'product_ddwc' %}">订单完成</a>#}
-{#        <a style="display: inline; float: right;" class="layui-btn layui-btn-normal" href="{% url 'product_all' %}">我的所有生产订单</a>#}
-{#      </div>#}
-{#    </fieldset>#}
-{#  </div>#}
 
   <div>
-    <table class="layui-table">
+    <table class="layui-table" lay-skin="row">
       <colgroup>
-        <col width="15%">
+        <col width="20%">
         <col width="20%">
         <col width="">
-        <col width="7%">
+{#        <col width="7%">#}
         <col width="6%">
         <col width="6%">
         <col width="6%">
@@ -47,8 +32,8 @@
 {#        <th>订单编号</th>#}
         <th>客户名称</th>
         <th>产品型号</th>
-        <th>料号信息</th>
-        <th>待生产数量</th>
+        <th>备注信息</th>
+{#        <th>待生产数量</th>#}
         <th>业务人员</th>
         <th>创建时间</th>
         <th>发货时间</th>
@@ -61,15 +46,15 @@
       <tr>
 {#        <td>{{ order.sn }}</td>#}
         <td>{{ order.customer }}</td>
-        <td>{{ order.good }}</td>
+        <td>{{ order.good }} 等商品</td>
         <td>{{ order.remark }}</td>
-        <td>{{ order.sumnumber }}</td>
+{#        <td>{{ order.sumnumber }}</td>#}
         <td>{{ order.salesperson }}</td>
         <td>{{ order.created_time|slice:"5:" }}</td>
         <td>{{ order.deliver_time|slice:"5:"|default_if_none:'' }}</td>
         <td><a class="layui-btn layui-btn-sm layui-btn-primary">{{ order.get_order_status_display }}</a></td>
         <td><a class="layui-btn layui-btn-danger layui-btn-sm"
-               onclick="return deleteOrder();" href="{% url 'order_del' order.id %}">删除</a></td>
+               onclick="return deleteOrder();" href="{% url 'order_del' order.order_id %}">删除</a></td>
       </tr>
       {% endfor %}
       </tbody>
@@ -96,9 +81,12 @@
               return false;
           }
       }
+
+      /*  页面自动刷新
       function myrefresh() {
           window.location.reload();
       }
       setTimeout('myrefresh()', 5000); // 指定5秒刷新一次
+      */
   </script>
 {% endblock %}

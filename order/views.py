@@ -9,7 +9,7 @@ from order.models import Order
 
 class OrderListView(ListView):
     model = Order
-    template_name = 'production_order.html'
+    template_name = 'order.html'
     context_object_name = 'order_list'
     paginate_by = 10
 
@@ -19,7 +19,7 @@ class OrderListView(ListView):
 
 
 class OrderFinishView(OrderListView):
-    template_name = 'production_finish.html'
+    template_name = 'order_finish.html'
     def get_queryset(self):
         now_day = datetime.datetime.now().date()
         return Order.objects.filter(created_time=now_day, is_valid=False)
@@ -36,6 +36,6 @@ def order_mine(request):
     now_day = datetime.datetime.now().date()
     name = request.session.get('user_name')
     order_list = Order.objects.filter(salesperson=name, created_time=now_day, is_valid=True)
-    return render(request, 'production_order.html', {
+    return render(request, 'order.html', {
         'order_list': order_list
     })
