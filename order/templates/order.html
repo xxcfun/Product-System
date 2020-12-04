@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  <title>生产管理</title>
+  <title>生产订单管理</title>
 {% endblock %}
 
 {% block container %}
@@ -29,7 +29,6 @@
       </colgroup>
       <thead>
       <tr>
-{#        <th>订单编号</th>#}
         <th>客户名称</th>
         <th>产品型号</th>
         <th>备注信息</th>
@@ -38,13 +37,12 @@
         <th>创建时间</th>
         <th>发货时间</th>
         <th>生产进度</th>
-        <th>操作</th>
+        <th fixed="right">操作</th>
       </tr>
       </thead>
       <tbody>
       {% for order in order_list %}
       <tr>
-{#        <td>{{ order.sn }}</td>#}
         <td>{{ order.customer }}</td>
         <td>{{ order.good }} 等商品</td>
         <td>{{ order.remark }}</td>
@@ -73,6 +71,11 @@
 {% endblock %}
 
 {% block footer %}
+  <script>
+    layui.use('table', function(){
+        var table = layui.table;
+    })
+  </script>
   <script type="text/javascript" language="JavaScript">
       function deleteOrder() {
           if (confirm("确定要删除该订单信息吗？")) {
@@ -81,7 +84,6 @@
               return false;
           }
       }
-
       /*  页面自动刷新
       function myrefresh() {
           window.location.reload();

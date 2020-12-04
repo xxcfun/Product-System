@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  <title>生产管理</title>
+  <title>生产订单管理</title>
 {% endblock %}
 
 {% block container %}
 
   <blockquote class="layui-elem-quote" style="display: flex; justify-content: space-between;">
-    生产订单列表
+    已完成生产订单列表
 
     {% if request.session.user_power == 1 or request.session.user_power == 4 %}
     <a href="{% url 'order_mine' %}" style="display: flex; justify-content: flex-end;">我的所有订单</a>
@@ -35,7 +35,7 @@
         <col width="15%">
         <col width="20%">
         <col width="">
-        <col width="7%">
+{#        <col width="7%">#}
         <col width="6%">
         <col width="6%">
         <col width="6%">
@@ -43,11 +43,10 @@
       </colgroup>
       <thead>
       <tr>
-{#        <th>订单编号</th>#}
         <th>客户名称</th>
         <th>产品型号</th>
         <th>料号信息</th>
-        <th>待生产数量</th>
+{#        <th>待生产数量</th>#}
         <th>业务人员</th>
         <th>创建时间</th>
         <th>发货时间</th>
@@ -57,16 +56,15 @@
       <tbody>
       {% for order in order_list %}
       <tr>
-{#        <td>{{ order.sn }}</td>#}
         <td>{{ order.customer }}</td>
         <td>{{ order.good }}</td>
         <td>{{ order.remark }}</td>
-        <td>{{ order.sumnumber }}</td>
+{#        <td>{{ order.sumnumber }}</td>#}
         <td>{{ order.salesperson }}</td>
         <td>{{ order.created_time|slice:"5:" }}</td>
         <td>{{ order.deliver_time|slice:"5:"|default_if_none:'' }}</td>
         <td><a class="layui-btn layui-btn-sm layui-btn-primary">订单完成</a></td>
-        </tr>
+      </tr>
       {% endfor %}
       </tbody>
     </table>
