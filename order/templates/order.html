@@ -66,7 +66,7 @@
         <td>{{ order.remark }}</td>
         <td>{{ order.salesperson }}</td>
         <td>{{ order.created_time|slice:"5:" }}</td>
-        <td>{{ order.deliver_time|slice:"5:"|default_if_none:'' }}</td>
+        <td>{{ order.deliver_time|slice:"5:" }}</td>
         <td><a class="layui-btn layui-btn-sm layui-btn-primary">{{ order.get_order_status_display }}</a></td>
         <td><a class="layui-btn layui-btn-danger layui-btn-sm"
                onclick="return deleteOrder();" href="{% url 'order_del' order.order_id %}">删除</a></td>

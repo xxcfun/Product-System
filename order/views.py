@@ -8,7 +8,7 @@ from order.models import Order, OrderList
 
 
 class OrderView(ListView):
-    # 订单列表 所有抓取的订单
+    """订单列表 所有抓取的订单"""
     model = Order
     template_name = 'order.html'
     context_object_name = 'orders'
@@ -25,12 +25,19 @@ class OrderView(ListView):
 
 
 class OrderFinishView(OrderView):
-    # 完成订单
+    """完成订单"""
     template_name = 'order_finish.html'
 
     def get_queryset(self):
-        # 5表示订单已完成
         return Order.objects.filter(order_status=5)
+
+
+class OrderDeleteView(OrderView):
+    """删除订单"""
+    template_name = 'order_delete.html'
+
+    def get_queryset(self):
+        return Order.objects.filter(is_valid=False)
 
 
 def order_finish(request):
@@ -45,13 +52,31 @@ def order_del(request, order_id):
     order = get_object_or_404(Order, order_id=order_id, is_valid=True)
     order.is_valid = False
     order.save()
-    return redirect('order_list')
+    return redirect('order')
 
 
 def order_mine(request):
-    now_day = datetime.datetime.now().date()
+    """查看自己待生产的订单"""
     name = request.session.get('user_name')
-    order_list = Order.objects.filter(salesperson=name, created_time=now_day, is_valid=True)
+    order_list = Order.objects.filter(salesperson=name, is_valid=True)
     return render(request, 'order.html', {
-        'order_list': order_list
+        'orders': order_list
+    })
+
+
+def order_mine_finish(request):
+    """查看自己已完成的订单"""
+    name = request.session.get('user_name')
+    order_list = Order.objects.filter(salesperson=name, is_valid=True, order_status=5)
+    return render(request, 'order_finish.html', {
+        'orders': order_list
+    })
+
+
+def order_mine_delete(request):
+    """查看自己已删除的订单"""
+    name = request.session.get('user_name')
+    order_list = Order.objects.filter(salesperson=name, is_valid=False)
+    return render(request, 'order_delete.html', {
+        'orders': order_list
     })

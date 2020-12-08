@@ -7,10 +7,10 @@
 {% block container %}
 
   <blockquote class="layui-elem-quote" style="display: flex; justify-content: space-between;">
-    已完成生产订单列表
+    已删除生产订单列表
 
     {% if request.session.user_power == 1 or request.session.user_power == 4 %}
-    <a href="{% url 'order_mine_finish' %}" style="display: flex; justify-content: flex-end;">我的所有订单</a>
+    <a href="{% url 'order_mine_delete' %}" style="display: flex; justify-content: flex-end;">我的所有订单</a>
     {% endif %}
   </blockquote>
 
@@ -66,7 +66,7 @@
         <td>{{ order.salesperson }}</td>
         <td>{{ order.created_time|slice:"5:" }}</td>
         <td>{{ order.deliver_time|slice:"5:"|default_if_none:'' }}</td>
-        <td><a class="layui-btn layui-btn-sm layui-btn-primary">{{ order.get_order_status_display }}</a></td>
+        <td><a class="layui-btn layui-btn-sm layui-btn-primary">已删除</a></td>
       </tr>
       {% endfor %}
       </tbody>

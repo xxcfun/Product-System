@@ -71,7 +71,6 @@ class OrderList(models.Model):
     order = models.ForeignKey(Order, related_name='order', verbose_name='订单', on_delete=models.CASCADE)
     good = models.CharField('产品名称', max_length=128)
     good_number = models.IntegerField('数量')
-    created_time = models.DateTimeField('创建时间', auto_now_add=True)
 
     class Meta:
         db_table = 'order_list'
