@@ -19,6 +19,8 @@
       <li class="layui-nav-item"><a href="{% url 'order_finish' %}">已完成订单</a></li>
       <li class="layui-nav-item"><a href="{% url 'order_delete' %}">已删除订单</a></li>
       {% elif request.session.user_power == 2 %}
+
+        <li class="layui-nav-item"><a href="{% url 'order_mine_finish' %}">毒我</a></li>
         {# 生产 #}
       <li class="layui-nav-item"><a href="{% url 'order' %}">所有订单</a></li>
       <li class="layui-nav-item"><a href="{% url 'prod_order' %}">我的生产控制台</a></li>
@@ -32,14 +34,14 @@
       <li class="layui-nav-item"><a href="{% url 'order_finish' %}">已完成订单</a></li>
       <li class="layui-nav-item"><a href="{% url 'prod_order' %}">我的生产控制台</a></li>
       <li class="layui-nav-item"><a href="{% url 'prod_seach' %}">订单搜索</a></li>
-      <li class="layui-nav-item">
-        <a href="javascript:;">操作日志</a>
-        <dl class="layui-nav-child">
-            <dd><a href="">邮件管理</a></dd>
-            <dd><a href="">消息管理</a></dd>
-            <dd><a href="">授权管理</a></dd>
-        </dl>
-      </li>
+{#      <li class="layui-nav-item">#}
+{#        <a href="javascript:;">操作日志</a>#}
+{#        <dl class="layui-nav-child">#}
+{#            <dd><a href="">邮件管理</a></dd>#}
+{#            <dd><a href="">消息管理</a></dd>#}
+{#            <dd><a href="">授权管理</a></dd>#}
+{#        </dl>#}
+{#      </li>#}
       {% endif %}
     </ul>
     <ul class="layui-nav layui-layout-right">

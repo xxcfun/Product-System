@@ -19,12 +19,12 @@
         <col width="3%">
         <col width="20%">
         <col width="24%">
-        <col width="24%">
+        <col width="29%">
         <col width="6%">
         <col width="6%">
         <col width="6%">
         <col width="6%">
-        <col width="5%">
+{#        <col width="5%">#}
       </colgroup>
       <thead>
       <tr>
@@ -36,7 +36,7 @@
         <th>创建时间</th>
         <th>发货时间</th>
         <th>生产进度</th>
-        <th fixed="right">操作</th>
+{#        <th fixed="right">操作</th>#}
       </tr>
       </thead>
       <tbody>
@@ -68,8 +68,8 @@
         <td>{{ order.created_time|slice:"5:" }}</td>
         <td>{{ order.deliver_time|slice:"5:" }}</td>
         <td><a class="layui-btn layui-btn-sm layui-btn-primary">{{ order.get_order_status_display }}</a></td>
-        <td><a class="layui-btn layui-btn-danger layui-btn-sm"
-               onclick="return deleteOrder();" href="{% url 'order_del' order.order_id %}">删除</a></td>
+{#        <td><a class="layui-btn layui-btn-danger layui-btn-sm"#}
+{#               onclick="return deleteOrder();" href="{% url 'order_del' order.order_id %}">删除</a></td>#}
       </tr>
       {% endfor %}
       </tbody>
@@ -94,13 +94,13 @@
     })
   </script>
   <script type="text/javascript" language="JavaScript">
-      function deleteOrder() {
-          if (confirm("确定要删除该订单信息吗？")) {
-              return true;
-          } else {
-              return false;
-          }
-      }
+      {#function deleteOrder() {#}
+      {#    if (confirm("确定要删除该订单信息吗？")) {#}
+      {#        return true;#}
+      {#    } else {#}
+      {#        return false;#}
+      {#    }#}
+      {#}#}
       /*  页面自动刷新
       function myrefresh() {
           window.location.reload();
