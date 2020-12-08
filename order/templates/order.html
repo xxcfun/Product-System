@@ -8,20 +8,18 @@
 
   <blockquote class="layui-elem-quote" style="display: flex; justify-content: space-between;">
     生产订单列表
-
     {% if request.session.user_power == 1 or request.session.user_power == 4 %}
     <a href="{% url 'order_mine' %}" style="display: flex; justify-content: flex-end;">我的所有订单</a>
     {% endif %}
   </blockquote>
 
   <div>
-    <table class="layui-table" lay-skin="row">
+    <table class="layui-table">
       <colgroup>
-        <col>
+        <col width="3%">
         <col width="20%">
+        <col width="28%">
         <col width="20%">
-        <col width="">
-{#        <col width="7%">#}
         <col width="6%">
         <col width="6%">
         <col width="6%">
@@ -32,9 +30,8 @@
       <tr>
         <th></th>
         <th>客户名称</th>
-        <th>产品型号</th>
+        <th>配件信息及数量</th>
         <th>备注信息</th>
-{#        <th>待生产数量</th>#}
         <th>业务人员</th>
         <th>创建时间</th>
         <th>发货时间</th>
@@ -43,13 +40,30 @@
       </tr>
       </thead>
       <tbody>
-      {% for order in order_list %}
+      {% for order in orders %}
       <tr>
-        <td style="display: flex; justify-content: center;">{{ forloop.counter }}</td>
+        <td>{{ forloop.counter }}</td>
         <td>{{ order.customer }}</td>
-        <td>{{ order.good }} 等商品</td>
+        <td>
+          <table>
+            <colgroup>
+              <col width="97%">
+              <col width="">
+            </colgroup>
+            <tbody>
+            {% for product in order_list %}
+              {% if product.order_id == order.order_id %}
+                <tr>
+                  <td>{{ product.good }}</td>
+                  <td>{{ product.good_number }}</td>
+                </tr>
+              {% else %}
+              {% endif %}
+            {% endfor %}
+            </tbody>
+          </table>
+        </td>
         <td>{{ order.remark }}</td>
-{#        <td>{{ order.sumnumber }}</td>#}
         <td>{{ order.salesperson }}</td>
         <td>{{ order.created_time|slice:"5:" }}</td>
         <td>{{ order.deliver_time|slice:"5:"|default_if_none:'' }}</td>

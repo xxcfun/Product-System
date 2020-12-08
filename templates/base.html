@@ -14,18 +14,18 @@
     <!-- 头部区域（可配合layui已有的水平导航） -->
     <ul class="layui-nav layui-layout-left">
       {% if request.session.user_power == 1 %}
-      <li class="layui-nav-item"><a href="{% url 'order_list' %}">所有订单</a></li>
+      <li class="layui-nav-item"><a href="{% url 'order' %}">所有订单</a></li>
       <li class="layui-nav-item"><a href="{% url 'order_finish' %}">已完成订单</a></li>
       {% elif request.session.user_power == 2 %}
-      <li class="layui-nav-item"><a href="{% url 'order_list' %}">所有订单</a></li>
+      <li class="layui-nav-item"><a href="{% url 'order' %}">所有订单</a></li>
       <li class="layui-nav-item"><a href="{% url 'order_finish' %}">已完成订单</a></li>
       <li class="layui-nav-item"><a href="{% url 'prod_order' %}">我的生产控制台</a></li>
       {% elif request.session.user_power == 3 %}
-      <li class="layui-nav-item"><a href="{% url 'order_list' %}">所有订单</a></li>
+      <li class="layui-nav-item"><a href="{% url 'order' %}">所有订单</a></li>
       <li class="layui-nav-item"><a href="{% url 'order_finish' %}">已完成订单</a></li>
       <li class="layui-nav-item"><a href="{% url 'prod_seach' %}">订单搜索</a></li>
       {% elif request.session.user_power == 4 %}
-      <li class="layui-nav-item"><a href="{% url 'order_list' %}">所有订单</a></li>
+      <li class="layui-nav-item"><a href="{% url 'order' %}">所有订单</a></li>
       <li class="layui-nav-item"><a href="{% url 'order_finish' %}">已完成订单</a></li>
       <li class="layui-nav-item"><a href="{% url 'prod_order' %}">我的生产控制台</a></li>
       <li class="layui-nav-item"><a href="{% url 'prod_seach' %}">订单搜索</a></li>

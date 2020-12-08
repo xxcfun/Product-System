@@ -68,9 +68,10 @@ class Order(models.Model):
 class OrderList(models.Model):
     """所有订单的配件信息"""
     list_id = models.IntegerField('订单配件id', unique=True, primary_key=True)
-    order_list_id = models.ForeignKey(Order, verbose_name='订单', on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name='order', verbose_name='订单', on_delete=models.CASCADE)
     good = models.CharField('产品名称', max_length=128)
     good_number = models.IntegerField('数量')
+    created_time = models.DateTimeField('创建时间', auto_now_add=True)
 
     class Meta:
         db_table = 'order_list'
