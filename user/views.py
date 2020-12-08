@@ -11,7 +11,7 @@ def index(request):
     # 首页，重定向到订单页
     if not request.session.get('is_login', None):
         return redirect('login')
-    return redirect('order_list')
+    return redirect('order')
 
 
 def bigscreen(request):

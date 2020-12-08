@@ -1,17 +1,17 @@
 from django.urls import path
 
 from product import views
-from product.views import OrderView, MaterialView, ProduceView, DeliverView, FinishView
+from product.views import ProOrderView, MaterialView, ProduceView, DeliverView, FinishView
 
 urlpatterns = [
     # 将订单加入生产流程控制页面
-    path('detail/<int:pk>', views.order_detail, name='order_detail'),
+    path('detail/<int:order_id>', views.order_detail, name='order_detail'),
     # 生产人员将订单加入生产列表
-    path('add/<int:pk>', views.prod_add, name='prod_add'),
+    path('add/<int:order_id>', views.prod_add, name='prod_add'),
     # 生产过程查询(商务)
     path('seach/', views.prod_seach, name='prod_seach'),
     # 待生产订单
-    path('order/', OrderView.as_view(), name='prod_order'),
+    path('order/', ProOrderView.as_view(), name='prod_order'),
     # 备料阶段
     path('material/', MaterialView.as_view(), name='prod_material'),
     # 生产中阶段

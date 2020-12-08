@@ -3,11 +3,13 @@ ORDER_BLZ = 1
 ORDER_DSC = 2
 ORDER_SCZ = 3
 ORDER_DFH = 4
+ORDER_WC = 5
 ORDER_STATUS = {
         (ORDER_BLZ, '备料中'),
         (ORDER_DSC, '待生产'),
         (ORDER_SCZ, '生产中'),
         (ORDER_DFH, '待发货'),
+        (ORDER_WC, '订单完成'),
 }
 
 

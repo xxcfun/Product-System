@@ -5,34 +5,28 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 
 from order.models import Order
+from order.views import OrderView
 from product.models import Product
 from user.models import User
 from utils import constants
 
 
-class OrderView(ListView):
+class ProOrderView(OrderView):
     """抓取来的所有订单列表"""
-    models = Order
     template_name = 'prod_order.html'
-    context_object_name = 'orders'
-    paginate_by = 10
-
-    def get_queryset(self):
-        now_day = datetime.datetime.now().date()
-        return Order.objects.filter(is_valid=True, created_time=now_day).order_by('deliver_time')
 
 
-def order_detail(request, pk):
+def order_detail(request, order_id):
     """订单列表详情，主要用来填写生产数量"""
-    order = get_object_or_404(Order, pk=pk, is_valid=True)
+    order = get_object_or_404(Order, order_id=order_id, is_valid=True)
     return render(request, 'prod_order_detail.html', {
         'order': order
     })
 
 
-def prod_add(request, pk):
+def prod_add(request, order_id):
     """将订单添加到生产控制中"""
-    order = get_object_or_404(Order, pk=pk)
+    order = get_object_or_404(Order, order_id=order_id)
     user = get_object_or_404(User, name=request.session.get('user_name'))
     # 拿到订单里的数量，先做判断
     order_num = order.sumnumber

@@ -32,10 +32,10 @@
   <div>
     <table class="layui-table">
       <colgroup>
-        <col width="15%">
+        <col width="3%">
         <col width="20%">
-        <col width="">
-{#        <col width="7%">#}
+        <col width="27%">
+        <col width="26%">
         <col width="6%">
         <col width="6%">
         <col width="6%">
@@ -43,10 +43,10 @@
       </colgroup>
       <thead>
       <tr>
+        <th></th>
         <th>客户名称</th>
-        <th>产品型号</th>
-        <th>料号信息</th>
-{#        <th>待生产数量</th>#}
+        <th>配件信息及数量</th>
+        <th>备注信息</th>
         <th>业务人员</th>
         <th>创建时间</th>
         <th>发货时间</th>
@@ -54,22 +54,41 @@
       </tr>
       </thead>
       <tbody>
-      {% for order in order_list %}
+      {% for order in orders %}
       <tr>
+        <td>{{ forloop.counter }}</td>
         <td>{{ order.customer }}</td>
-        <td>{{ order.good }}</td>
+        <td>
+          <table>
+            <colgroup>
+              <col width="97%">
+              <col width="3%">
+            </colgroup>
+            <tbody>
+            {% for product in order_list %}
+              {% if product.order_id == order.order_id %}
+                <tr>
+                  <td>{{ product.good }}</td>
+                  <td>{{ product.good_number }}</td>
+                </tr>
+              {% else %}
+              {% endif %}
+            {% endfor %}
+            </tbody>
+          </table>
+        </td>
         <td>{{ order.remark }}</td>
-{#        <td>{{ order.sumnumber }}</td>#}
         <td>{{ order.salesperson }}</td>
         <td>{{ order.created_time|slice:"5:" }}</td>
         <td>{{ order.deliver_time|slice:"5:"|default_if_none:'' }}</td>
-        <td><a class="layui-btn layui-btn-sm layui-btn-primary">订单完成</a></td>
+        <td><a class="layui-btn layui-btn-sm layui-btn-primary">{{ order.get_order_status_display }}</a></td>
       </tr>
       {% endfor %}
       </tbody>
     </table>
   </div>
 
+  {# 复用 #}
   {% if page_obj %}
     {% if page_obj.has_previous %}
       <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.previous_page_number }}">上一页</a>

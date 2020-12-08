@@ -32,21 +32,24 @@
   <div>
     <table class="layui-table">
       <colgroup>
-        <col width="15%">
+        <col width="3%">
         <col width="20%">
-        <col width="">
-        <col width="5%">
-        <col width="8%">
-        <col width="8%">
+        <col width="24%">
+        <col width="24%">
+        <col width="6%">
+        <col width="6%">
+        <col width="6%">
+        <col width="6%">
         <col width="5%">
       </colgroup>
       <thead>
       <tr>
+        <th></th>
         <th>客户名称</th>
-        <th>产品型号</th>
-        <th>料号信息</th>
-        <th>数量</th>
-        <th>业务负责人</th>
+        <th>配件信息及数量</th>
+        <th>备注信息</th>
+        <th>业务人员</th>
+        <th>创建时间</th>
         <th>发货时间</th>
         <th>操作</th>
       </tr>
@@ -54,14 +57,33 @@
       <tbody>
       {% for order in orders %}
       <tr>
+        <td>{{ forloop.counter }}</td>
         <td style="color: #01AAED">{{ order.customer }}</td>
-        <td>{{ order.good }}</td>
+        <td>
+          <table>
+            <colgroup>
+              <col width="97%">
+              <col width="">
+            </colgroup>
+            <tbody>
+            {% for product in order_list %}
+              {% if product.order_id == order.order_id %}
+                <tr>
+                  <td>{{ product.good }}</td>
+                  <td>{{ product.good_number }}</td>
+                </tr>
+              {% else %}
+              {% endif %}
+            {% endfor %}
+            </tbody>
+          </table>
+        </td>
         <td>{{ order.remark }}</td>
-        <td>{{ order.sumnumber }}</td>
         <td>{{ order.salesperson }}</td>
+        <td>{{ order.created_time|slice:"5:" }}</td>
         <td>{{ order.deliver_time|slice:"5:"|default_if_none:'未注明' }}</td>
         <td><a class="layui-btn layui-btn-sm"
-               onclick="return addProd();" href="{% url 'order_detail' order.pk %}">生产</a></td>
+               onclick="return addProd();" href="{% url 'order_detail' order.order_id %}">生产</a></td>
       </tr>
       {% endfor %}
       </tbody>

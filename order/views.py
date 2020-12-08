@@ -7,8 +7,8 @@ from django.views.generic import ListView
 from order.models import Order, OrderList
 
 
-# 原来订单列表
 class OrderView(ListView):
+    # 订单列表 所有抓取的订单
     model = Order
     template_name = 'order.html'
     context_object_name = 'orders'
@@ -25,25 +25,24 @@ class OrderView(ListView):
 
 
 class OrderFinishView(OrderView):
-    # 原来订单完成列表
+    # 完成订单
     template_name = 'order_finish.html'
 
     def get_queryset(self):
-        now_day = datetime.datetime.now().date()
-        return Order.objects.filter(created_time=now_day, is_valid=False)
+        # 5表示订单已完成
+        return Order.objects.filter(order_status=5)
 
 
 def order_finish(request):
     """函数视图"""
-    
     return render(request, 'order_finish.html', {
 
     })
 
 
-def order_del(request, pk):
+def order_del(request, order_id):
     """订单删除 逻辑删除"""
-    order = get_object_or_404(Order, pk=pk, is_valid=True)
+    order = get_object_or_404(Order, order_id=order_id, is_valid=True)
     order.is_valid = False
     order.save()
     return redirect('order_list')

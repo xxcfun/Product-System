@@ -11,7 +11,7 @@ urlpatterns = [
     # path('', views.order, name='order_list'),
     # path('finish/', views.order_finish, name='order_finish'),
     # 删除订单
-    path('delect/<int:pk>', views.order_del, name='order_del'),
+    path('delect/<int:order_id>', views.order_del, name='order_del'),
     # 查看自己的订单
     path('owen/', views.order_mine, name='order_mine'),
 ]
