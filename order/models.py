@@ -55,7 +55,7 @@ class Order(models.Model):
 
     def update_status_ddwc(self):
         """当发货完成时，订单完成，将is_valid字段改为false"""
-        self.is_valid = False
+        self.order_status = constants.ORDER_WC
         self.save()
         self.refresh_from_db()
 

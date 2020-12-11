@@ -1,7 +1,7 @@
 from django.urls import path
 
 from product import views
-from product.views import ProOrderView, MaterialView, ProduceView, DeliverView, FinishView
+from product.views import ProOrderView, ProduceView, DeliverView, FinishView
 
 urlpatterns = [
     # 将订单加入生产流程控制页面
@@ -12,8 +12,8 @@ urlpatterns = [
     path('seach/', views.prod_seach, name='prod_seach'),
     # 待生产订单
     path('order/', ProOrderView.as_view(), name='prod_order'),
-    # 备料阶段
-    path('material/', MaterialView.as_view(), name='prod_material'),
+    # # 备料阶段
+    # path('material/', MaterialView.as_view(), name='prod_material'),
     # 生产中阶段
     path('produce/', ProduceView.as_view(), name='prod_produce'),
     # 待发货阶段

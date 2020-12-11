@@ -16,14 +16,14 @@
       <div class="layui-field-box">
         <a style="display: inline; float: left;" class="layui-btn layui-btn-primary" href="{% url 'prod_order' %}">待生产订单</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn
-          {% if url == 'material' %}
-          layui-btn-warm
-          {% else %}
-          layui-btn-primary
-          {% endif %}
-          " href="{% url 'prod_material' %}">备料中</a>
-        <i class="layui-icon layui-icon-right"></i>
+{#        <a class="layui-btn#}
+{#          {% if url == 'material' %}#}
+{#          layui-btn-warm#}
+{#          {% else %}#}
+{#          layui-btn-primary#}
+{#          {% endif %}#}
+{#          " href="{% url 'prod_material' %}">备料中</a>#}
+{#        <i class="layui-icon layui-icon-right"></i>#}
         <a class="layui-btn
           {% if url == 'produce' %}
           layui-btn-warm
@@ -56,51 +56,70 @@
   <div>
     <table class="layui-table">
       <colgroup>
-        <col width="15%">
+        <col width="3%">
         <col width="20%">
-        <col width="">
-        <col width="5%">
-        <col width="8%">
-        <col width="8%">
-        <col width="8%">
-        <col width="8%">
+        <col width="22%">
+        <col width="20%">
+        <col width="6%">
+        <col width="6%">
+        <col width="6%">
+        <col width="6%">
+        <col width="6%">
         <col width="5%">
       </colgroup>
       <thead>
       <tr>
+        <th></th>
         <th>客户名称</th>
-        <th>产品型号</th>
+        <th>配件信息及数量</th>
         <th>附加说明</th>
-        <th>数量</th>
-        <th>状态</th>
-        <th>业务负责人</th>
-        <th>生产负责人</th>
+        <th>业务人员</th>
+        <th>创建时间</th>
         <th>发货时间</th>
+        <th>订单状态</th>
         <th>操作</th>
       </tr>
       </thead>
       <tbody>
-      {% for product in product_list %}
+      {% for order in orders %}
       <tr>
-        <td style="color: #01AAED">{{ product.order.customer }}</td>
-        <td>{{ product.order.good }}</td>
-        <td>{{ product.order.remark }}</td>
-        <td>{{ product.owen_num }}</td>
-        <td>{{ product.get_status_display }}</td>
-        <td>{{ product.order.salesperson }}</td>
-        <td>{{ product.user }}</td>
-        <td>{{ product.order.deliver_time|slice:"5:"|default_if_none:'未注明' }}</td>
-        {% if product.status == 4 %}
+        <td>{{ forloop.counter }}</td>
+        <td style="color: #01AAED">{{ order.customer }}</td>
+        <td>
+          <table>
+            <colgroup>
+              <col width="97%">
+              <col width="">
+            </colgroup>
+            <tbody>
+            {% for product in order_list %}
+              {% if product.order_id == order.order_id %}
+                <tr>
+                  <td>{{ product.good }}</td>
+                  <td>{{ product.good_number }}</td>
+                </tr>
+              {% else %}
+              {% endif %}
+            {% endfor %}
+            </tbody>
+          </table>
+        </td>
+        <td>{{ order.remark }}</td>
+        <td>{{ order.salesperson }}</td>
+        <td>{{ order.created_time|slice:"5:" }}</td>
+        <td>{{ order.deliver_time|slice:"5:"|default_if_none:'未注明' }}</td>
+        <td><a class="layui-btn layui-btn-sm layui-btn-primary">{{ order.get_order_status_display }}</a></td>
+        {% if order.order_status == 4 %}
           <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:;">订单完成</a></td>
-        {% elif product.status == 3 %}
+        {% elif order.order_status == 3 %}
           <td><a class="layui-btn layui-btn-warm layui-btn-sm"
-               onclick="return editProd();" href="{% url 'prod_edit' product.id %}">去发货</a></td>
-        {% elif product.status == 2 %}
+               onclick="return editProd();" href="{% url 'prod_edit' order.order_id %}">去发货</a></td>
+        {% elif order.order_status == 2 %}
           <td><a class="layui-btn layui-btn-warm layui-btn-sm"
-               onclick="return editProd();" href="{% url 'prod_edit' product.id %}">生产完成</a></td>
-        {% elif product.status == 1 %}
-          <td><a class="layui-btn layui-btn-warm layui-btn-sm"
-               onclick="return editProd();" href="{% url 'prod_edit' product.id %}">备料完成</a></td>
+               onclick="return editProd();" href="{% url 'prod_edit' order.order_id %}">生产完成</a></td>
+{#        {% elif order.order_status == 1 %}#}
+{#          <td><a class="layui-btn layui-btn-warm layui-btn-sm"#}
+{#               onclick="return editProd();" href="{% url 'prod_edit' order.order_id %}">备料完成</a></td>#}
         {% endif %}
       </tr>
       {% endfor %}

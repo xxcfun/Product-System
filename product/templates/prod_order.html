@@ -16,8 +16,8 @@
       <div class="layui-field-box">
         <a style="display: inline; float: left;" class="layui-btn" href="{% url 'prod_order' %}">待生产订单</a>
         <i class="layui-icon layui-icon-right"></i>
-        <a class="layui-btn layui-btn-primary" href="{% url 'prod_material' %}">备料中</a>
-        <i class="layui-icon layui-icon-right"></i>
+{#        <a class="layui-btn layui-btn-primary" href="{% url 'prod_material' %}">备料中</a>#}
+{#        <i class="layui-icon layui-icon-right"></i>#}
         <a class="layui-btn layui-btn-primary" href="{% url 'prod_produce' %}">生产中</a>
         <i class="layui-icon layui-icon-right"></i>
         <a class="layui-btn layui-btn-primary" href="{% url 'prod_deliver' %}">待发货</a>
@@ -34,8 +34,9 @@
       <colgroup>
         <col width="3%">
         <col width="20%">
-        <col width="24%">
-        <col width="24%">
+        <col width="22%">
+        <col width="20%">
+        <col width="6%">
         <col width="6%">
         <col width="6%">
         <col width="6%">
@@ -51,6 +52,7 @@
         <th>业务人员</th>
         <th>创建时间</th>
         <th>发货时间</th>
+        <th>订单状态</th>
         <th>操作</th>
       </tr>
       </thead>
@@ -82,8 +84,9 @@
         <td>{{ order.salesperson }}</td>
         <td>{{ order.created_time|slice:"5:" }}</td>
         <td>{{ order.deliver_time|slice:"5:"|default_if_none:'未注明' }}</td>
+        <td><a class="layui-btn layui-btn-sm layui-btn-primary">{{ order.get_order_status_display }}</a></td>
         <td><a class="layui-btn layui-btn-sm"
-               onclick="return addProd();" href="{% url 'order_detail' order.order_id %}">生产</a></td>
+               onclick="return addProd();" href="{% url 'prod_add' order.order_id %}">生产</a></td>
       </tr>
       {% endfor %}
       </tbody>
@@ -104,7 +107,7 @@
 {% block footer %}
   <script type="text/javascript" language="JavaScript">
     function addProd() {
-        if (confirm('请确认要生产的数量，按确认进行操作')){
+        if (confirm('是否进入生产')){
             return true;
         } else {
             return false;
