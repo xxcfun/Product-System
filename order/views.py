@@ -15,13 +15,14 @@ class OrderView(ListView):
     paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        # 添加额外的上下文信息，将配件加入订单中
         kwargs['order_list'] = OrderList.objects.all()
         return super(OrderView, self).get_context_data(**kwargs)
 
     def get_queryset(self):
-        now_day = datetime.datetime.now().date()
-        return Order.objects.filter(created_time=now_day, is_valid=True)
-        # return Order.objects.all()
+        # 返回个人的订单
+        name = self.request.session.get('user_name')
+        return Order.objects.filter(is_valid=True, salesperson=name).exclude(order_status=5)
 
 
 class OrderFinishView(OrderView):
@@ -29,7 +30,8 @@ class OrderFinishView(OrderView):
     template_name = 'order_finish.html'
 
     def get_queryset(self):
-        return Order.objects.filter(order_status=5)
+        name = self.request.session.get('user_name')
+        return Order.objects.filter(order_status=5, salesperson=name)
 
 
 class OrderDeleteView(OrderView):
@@ -37,11 +39,12 @@ class OrderDeleteView(OrderView):
     template_name = 'order_delete.html'
 
     def get_queryset(self):
-        return Order.objects.filter(is_valid=False)
+        name = self.request.session.get('user_name')
+        return Order.objects.filter(is_valid=False, salesperson=name)
 
 
 def order_finish(request):
-    """函数视图"""
+    """函数视图，目前不启用"""
     return render(request, 'order_finish.html', {
 
     })

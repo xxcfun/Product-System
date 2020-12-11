@@ -3,19 +3,18 @@ from django.db import models
 # Create your models here.
 from order.models import Order
 from user.models import User
-from utils import constants
 
 
 class Product(models.Model):
+    # 外键关联订单
     order = models.ForeignKey(Order, verbose_name='生产订单', related_name='products', on_delete=models.CASCADE)
+    # 外键关联生产人员
     user = models.ForeignKey(User, verbose_name='生产人员', related_name='products', on_delete=models.CASCADE)
-    owen_num = models.IntegerField('生产数量')
-    status = models.SmallIntegerField('生产状态', choices=constants.PROD_STATUS, default=constants.PROD_BL)
     created_time = models.DateTimeField('创建时间', auto_now_add=True)
     updated_time = models.DateTimeField('更新时间', auto_now=True)
 
     def __str__(self):
-        return self.status
+        return self.order
 
     class Meta:
         db_table = 'product'

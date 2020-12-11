@@ -12,21 +12,16 @@ class Order(models.Model):
     customer = models.CharField('客户名称', max_length=64)
     good = models.CharField('产品名称', max_length=128)
     remark = models.CharField('料号信息', max_length=256, blank=True, null=True)
-    sumnumber = models.IntegerField('数量')   # 无意义
+    sumnumber = models.IntegerField('数量')   # 无意义 捕获虚拟库存
     salesperson = models.CharField('业务姓名', max_length=64)
     created_time = models.CharField('创建时间', max_length=128)
     order_date = models.CharField('时间', max_length=16, blank=True, null=True)
     deliver_time = models.CharField('预计发货时间', max_length=128, blank=True, null=True)
-    # 下面为系统自定义的字段
-    # 当生产结束时，订单转为不存在，不在界面上显示
+
+    # 删除时，将该字段的值改为false
     is_valid = models.BooleanField('订单是否存在', default=True)
-    """
-    读取sqlserver中的数据存入数据库时，状态默认为待生产
-    生产开始生产时，状态改为生产中
-    待该订单全部生产完成时，改为待出货
-    所有出货完成后，将is_valid字段改为false
-    """
-    order_status = models.SmallIntegerField('订单状态', choices=constants.ORDER_STATUS, default=constants.ORDER_DSC)
+    # 所有出货完成后，status值转变为4，既订单完成
+    order_status = models.SmallIntegerField('订单状态', choices=constants.ORDER_STATUS, default=1)
 
     def __str__(self):
         return "客户名称：" + self.customer + "|" + "货品名称：" + self.good

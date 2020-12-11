@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <META HTTP-EQUIV="pragma" CONTENT="no-cache">
+  <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+  <META HTTP-EQUIV="expires" CONTENT="0">
   <link rel="stylesheet" href="/static/layui/css/layui.css">
   {% block title %}
   {% endblock %}
@@ -19,10 +22,9 @@
       <li class="layui-nav-item"><a href="{% url 'order_finish' %}">已完成订单</a></li>
       <li class="layui-nav-item"><a href="{% url 'order_delete' %}">已删除订单</a></li>
       {% elif request.session.user_power == 2 %}
-
-        <li class="layui-nav-item"><a href="{% url 'order_mine_finish' %}">毒我</a></li>
         {# 生产 #}
       <li class="layui-nav-item"><a href="{% url 'order' %}">所有订单</a></li>
+{#      <li class="layui-nav-item"><a href="{% url 'order_finish' %}">已完成订单</a></li>#}
       <li class="layui-nav-item"><a href="{% url 'prod_order' %}">我的生产控制台</a></li>
       {% elif request.session.user_power == 3 %}
         {# 商务 #}

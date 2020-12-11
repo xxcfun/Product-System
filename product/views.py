@@ -1,5 +1,3 @@
-import datetime
-
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
@@ -14,6 +12,9 @@ from utils import constants
 class ProOrderView(OrderView):
     """抓取来的所有订单列表"""
     template_name = 'prod_order.html'
+
+    def get_queryset(self):
+        return Order.objects.filter(order_status=constants.ORDER_BLZ)
 
 
 def order_detail(request, order_id):
@@ -50,7 +51,7 @@ def prod_add(request, order_id):
     # 生成生产信息记录
     # 如果已经添加到生产列表中，只把生产数量更新就行
     try:
-        product = Product.objects.get(order=order, user=user, status=constants.PROD_BL)
+        product = Product.objects.get(order=order, user=user, status=constants.ORDER_BLZ)
         count = product.owen_num + count
         product.owen_num = count
         product.save()
@@ -85,28 +86,28 @@ class MaterialView(ProductStatusView):
     """备料"""
     def get_queryset(self):
         user = self.request.session.get('user_id')
-        return Product.objects.filter(status=constants.PROD_BL, user=user).order_by('-updated_time')
+        return Product.objects.filter(order__order_status=constants.ORDER_BLZ, user=user).order_by('-updated_time')
 
 
 class ProduceView(ProductStatusView):
     """生产中"""
     def get_queryset(self):
         user = self.request.session.get('user_id')
-        return Product.objects.filter(status=constants.PROD_SC, user=user).order_by('-updated_time')
+        return Product.objects.filter(order__order_status=constants.ORDER_SCZ, user=user).order_by('-updated_time')
 
 
 class DeliverView(ProductStatusView):
     """待发货"""
     def get_queryset(self):
         user = self.request.session.get('user_id')
-        return Product.objects.filter(status=constants.PROD_DFH, user=user).order_by('-updated_time')
+        return Product.objects.filter(order__order_status=constants.ORDER_DFH, user=user).order_by('-updated_time')
 
 
 class FinishView(ProductStatusView):
     """订单完成"""
     def get_queryset(self):
         user = self.request.session.get('user_id')
-        return Product.objects.filter(status=constants.PROD_WC, user=user).order_by('-updated_time')
+        return Product.objects.filter(order__order_status=constants.ORDER_WC, user=user).order_by('-updated_time')
 
 
 def prod_edit(request, pk):
@@ -116,32 +117,30 @@ def prod_edit(request, pk):
     """
     备料-生产中
     """
-    if prod_status == constants.PROD_BL:
-        prod.status = constants.PROD_SC
+    if prod_status == constants.ORDER_BLZ:
+        prod.status = constants.ORDER_SCZ
         prod.save()
         return redirect('prod_produce')
     """
     生产中-待发货
     只有所有订单都生产完毕才能点发货
     """
-    if prod_status == constants.PROD_SC:
+    if prod_status == constants.ORDER_SCZ:
 
-        prod.status = constants.PROD_DFH
+        prod.status = constants.ORDER_DFH
         prod.save()
         prod.order.update_status_dfh()
         return redirect('prod_deliver')
     """
     待发货-订单完成
     """
-    if prod_status == constants.PROD_DFH:
-        prod.status = constants.PROD_WC
+    if prod_status == constants.ORDER_DFH:
+        prod.status = constants.ORDER_WC
         prod.save()
         if prod.order.sumnumber == 0:
             prod.order.update_status_ddwc()
         return redirect('prod_finish')
-"""
-    流程控制结束
-"""
+"""流程控制结束"""
 
 
 def prod_seach(request):
