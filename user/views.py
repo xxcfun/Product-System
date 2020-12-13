@@ -11,7 +11,13 @@ def index(request):
     # 首页，重定向到订单页
     if not request.session.get('is_login', None):
         return redirect('login')
-    return redirect('order')
+    power = request.session.get('user_power')
+    if power == 1:
+        return redirect('order')
+    elif power == 2:
+        return redirect('prod_order')
+    elif power == 3:
+        return redirect('prod_seach')
 
 
 def bigscreen(request):

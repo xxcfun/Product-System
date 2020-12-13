@@ -30,8 +30,8 @@
       <tr>
         <th></th>
         <th>客户名称</th>
+        <th>配件信息及数量</th>
         <th>附件说明</th>
-        <th>备注信息</th>
         <th>业务人员</th>
         <th>创建时间</th>
         <th>发货时间</th>
@@ -94,13 +94,14 @@
     })
   </script>
   <script type="text/javascript" language="JavaScript">
-      {#function deleteOrder() {#}
-      {#    if (confirm("确定要删除该订单信息吗？")) {#}
-      {#        return true;#}
-      {#    } else {#}
-      {#        return false;#}
-      {#    }#}
-      {#}#}
+      /*
+      function deleteOrder() {
+          if (confirm("确定要删除该订单信息吗？")) {
+              return true;
+          } else {
+              return false;
+          }
+      }
       /*  页面自动刷新
       function myrefresh() {
           window.location.reload();

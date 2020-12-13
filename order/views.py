@@ -22,8 +22,8 @@ class OrderView(ListView):
     def get_queryset(self):
         # 返回个人的订单
         name = self.request.session.get('user_name')
-        return Order.objects.filter(is_valid=True).exclude(order_status=5)
-        # return Order.objects.filter(is_valid=True, salesperson=name).exclude(order_status=5)
+        # return Order.objects.filter(is_valid=True).exclude(order_status=4)
+        return Order.objects.filter(is_valid=True, salesperson=name).exclude(order_status=5)
 
 
 class OrderFinishView(OrderView):
@@ -32,7 +32,7 @@ class OrderFinishView(OrderView):
 
     def get_queryset(self):
         name = self.request.session.get('user_name')
-        return Order.objects.filter(order_status=5, salesperson=name)
+        return Order.objects.filter(order_status=4, salesperson=name)
 
 
 class OrderDeleteView(OrderView):

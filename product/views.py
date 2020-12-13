@@ -5,7 +5,6 @@ from django.views.generic import ListView
 from order.models import Order
 from order.views import OrderView
 from product.models import Product
-from user.models import User
 from utils import constants
 
 
