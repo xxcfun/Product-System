@@ -20,7 +20,7 @@ def index(request):
         return redirect('prod_order')
     elif power == 3:
         # 返回商务
-        return redirect('prod_seach')
+        return redirect('order_seach')
     elif power == 4:
         # 返回经理
         return redirect('order')

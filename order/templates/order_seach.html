@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  <title>订单查询</title>
+  <title>订单搜索</title>
 {% endblock %}
 
 {% block container %}
@@ -10,11 +10,12 @@
     订单列表
   </blockquote>
 
-  <form class="layui-form" action="." method="post">
+  <form class="layui-form" action="." method="get">
     {% csrf_token %}
     <fieldset class="layui-elem-field">
       <legend>搜索内容</legend>
       <div class="layui-field-box layui-col-md6">
+        <!--客户查找-->
         <div class="layui-form-item">
           <label class="layui-form-label">客户名称</label>
           <div class="layui-input-block">
@@ -22,22 +23,29 @@
                    class="layui-input" value="">
           </div>
         </div>
-        <div class="layui-form-item">
-          <label class="layui-form-label">产品型号</label>
-          <div class="layui-input-block">
-            <input type="text" name="good" placeholder="按货品名称进行搜索" autocomplete="off"
-                   class="layui-input" value="">
-          </div>
-        </div>
+        <!--状态查找-->
         <div class="layui-form-item">
           <label class="layui-form-label">订单状态</label>
           <div class="layui-input-block">
             <select name="status">
               <option value=""></option>
-              <option value="1">备料</option>
+              <option value="1">待生产</option>
               <option value="2">生产中</option>
               <option value="3">待发货</option>
               <option value="4">订单完成</option>
+            </select>
+          </div>
+        </div>
+        <!--业务查找-->
+        <div class="layui-form-item">
+          <label class="layui-form-label">人员筛选</label>
+          <div class="layui-input-block">
+            <select name="salesperson">
+              <option value=""></option>
+              <option value="尹明辉">尹明辉</option>
+              {% for user in user_list %}
+              <option value="{{ user.name }}">{{ user.name }}</option>
+              {% endfor %}
             </select>
           </div>
         </div>
@@ -54,44 +62,63 @@
   <div>
     <table class="layui-table">
       <colgroup>
-        <col width="15%">
+        <col width="3%">
         <col width="20%">
-        <col width="">
-        <col width="5%">
-        <col width="8%">
-        <col width="8%">
-        <col width="8%">
-        <col width="8%">
+        <col width="27%">
+        <col width="26%">
+        <col width="6%">
+        <col width="6%">
+        <col width="6%">
+        <col width="6%">
       </colgroup>
       <thead>
       <tr>
+        <th></th>
         <th>客户名称</th>
-        <th>产品型号</th>
+        <th>产品信息及数量</th>
         <th>附加说明</th>
-        <th>数量</th>
-        <th>状态</th>
-        <th>业务负责人</th>
-        <th>生产负责人</th>
+        <th>业务人员</th>
+        <th>创建时间</th>
         <th>发货时间</th>
+        <th>生产进度</th>
       </tr>
       </thead>
       <tbody>
-      {% for product in products %}
+      {% for order in orders %}
       <tr>
-        <td style="color: #01AAED">{{ product.order.customer }}</td>
-        <td>{{ product.order.good }}</td>
-        <td>{{ product.order.remark }}</td>
-        <td>{{ product.owen_num }}</td>
-        <td>{{ product.get_status_display }}</td>
-        <td>{{ product.order.salesperson }}</td>
-        <td>{{ product.user }}</td>
-        <td>{{ product.order.deliver_time|slice:"5:"|default_if_none:'未注明' }}</td>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ order.customer }}</td>
+        <td>
+          <table>
+            <colgroup>
+              <col width="97%">
+              <col width="3%">
+            </colgroup>
+            <tbody>
+            {% for product in order_list %}
+              {% if product.order_id == order.order_id %}
+                <tr>
+                  <td>{{ product.good }}</td>
+                  <td>{{ product.good_number }}</td>
+                </tr>
+              {% else %}
+              {% endif %}
+            {% endfor %}
+            </tbody>
+          </table>
+        </td>
+        <td>{{ order.remark }}</td>
+        <td>{{ order.salesperson }}</td>
+        <td>{{ order.created_time|slice:"5:" }}</td>
+        <td>{{ order.deliver_time|slice:"5:"|default_if_none:'' }}</td>
+        <td><a class="layui-btn layui-btn-sm layui-btn-primary">{{ order.get_order_status_display }}</a></td>
       </tr>
       {% endfor %}
       </tbody>
     </table>
   </div>
 
+  {# 复用 #}
   {% if page_obj %}
     {% if page_obj.has_previous %}
       <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.previous_page_number }}">上一页</a>
@@ -101,7 +128,6 @@
       <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.next_page_number }}">下一页</a>
     {% endif %}
   {% endif %}
-{#  <div id="test1" style="justify-content: center"></div>  # layui实现分页#}
 {% endblock %}
 
 {% block footer %}

@@ -22,7 +22,4 @@ urlpatterns = [
     path('finish/', FinishView.as_view(), name='prod_finish'),
     # 更改生产状态
     path('edit/<int:pk>', views.prod_edit, name='prod_edit'),
-
-    # 生产过程查询(商务)
-    path('seach/', views.prod_seach, name='prod_seach'),
 ]
