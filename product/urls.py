@@ -8,8 +8,8 @@ urlpatterns = [
     path('detail/<int:order_id>', views.order_detail, name='order_detail'),
     # 生产人员将订单加入生产列表
     path('add/<int:order_id>', views.prod_add, name='prod_add'),
-    # 生产过程查询(商务)
-    path('seach/', views.prod_seach, name='prod_seach'),
+    # 生产人员将订单删除
+    path('del/<int:order_id>', views.prod_del, name='prod_del'),
     # 待生产订单
     path('order/', ProOrderView.as_view(), name='prod_order'),
     # # 备料阶段
@@ -22,4 +22,7 @@ urlpatterns = [
     path('finish/', FinishView.as_view(), name='prod_finish'),
     # 更改生产状态
     path('edit/<int:pk>', views.prod_edit, name='prod_edit'),
+
+    # 生产过程查询(商务)
+    path('seach/', views.prod_seach, name='prod_seach'),
 ]

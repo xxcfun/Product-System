@@ -13,11 +13,17 @@ def index(request):
         return redirect('login')
     power = request.session.get('user_power')
     if power == 1:
+        # 返回业务
         return redirect('order')
     elif power == 2:
+        # 返回生产
         return redirect('prod_order')
     elif power == 3:
+        # 返回商务
         return redirect('prod_seach')
+    elif power == 4:
+        # 返回经理
+        return redirect('order')
 
 
 def bigscreen(request):

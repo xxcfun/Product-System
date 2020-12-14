@@ -9,8 +9,8 @@
   <blockquote class="layui-elem-quote" style="display: flex; justify-content: space-between;">
     已完成生产订单列表
 
-    {% if request.session.user_power == 1 or request.session.user_power == 4 %}
-    <a href="{% url 'order_mine_finish' %}" style="display: flex; justify-content: flex-end;">我的所有订单</a>
+    {% if request.session.user_power == 4 %}
+    <a href="{% url 'order_all_finish' %}" style="display: flex; justify-content: flex-end;">查看全部已完成订单</a>
     {% endif %}
   </blockquote>
 

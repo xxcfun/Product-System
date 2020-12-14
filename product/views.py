@@ -13,7 +13,7 @@ class ProOrderView(OrderView):
     template_name = 'prod_order.html'
 
     def get_queryset(self):
-        return Order.objects.filter(order_status=constants.ORDER_DSC)
+        return Order.objects.filter(order_status=constants.ORDER_DSC, is_valid=True)
 
 
 def order_detail(request, order_id):
@@ -65,6 +65,14 @@ def prod_add(request, order_id):
     #         owen_num=count,
     #     )
     # return redirect('prod_material')
+
+
+def prod_del(request, order_id):
+    """将订单添加到生产控制中"""
+    order = get_object_or_404(Order, order_id=order_id)
+    order.is_valid = 0
+    order.save()
+    return redirect('prod_order')
 
 
 """

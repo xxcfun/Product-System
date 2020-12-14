@@ -23,7 +23,7 @@ class OrderView(ListView):
         # 返回个人的订单
         name = self.request.session.get('user_name')
         # return Order.objects.filter(is_valid=True).exclude(order_status=4)
-        return Order.objects.filter(is_valid=True, salesperson=name).exclude(order_status=5)
+        return Order.objects.filter(is_valid=True, salesperson=name).exclude(order_status=4)
 
 
 class OrderFinishView(OrderView):
@@ -44,43 +44,27 @@ class OrderDeleteView(OrderView):
         return Order.objects.filter(is_valid=False, salesperson=name)
 
 
-def order_finish(request):
-    """函数视图，目前不启用"""
-    return render(request, 'order_finish.html', {
-
-    })
-
-
-def order_del(request, order_id):
-    """订单删除 逻辑删除"""
-    order = get_object_or_404(Order, order_id=order_id, is_valid=True)
-    order.is_valid = False
-    order.save()
-    return redirect('order')
+# def order_del(request, order_id):
+#     """订单删除 逻辑删除"""
+#     order = get_object_or_404(Order, order_id=order_id, is_valid=True)
+#     order.is_valid = False
+#     order.save()
+#     return redirect('order')
 
 
-def order_mine(request):
-    """查看自己待生产的订单"""
-    name = request.session.get('user_name')
-    order_list = Order.objects.filter(salesperson=name, is_valid=True)
-    return render(request, 'order.html', {
-        'orders': order_list
-    })
+class OrderAllView(OrderView):
+    """查看所有待生产的订单"""
+    def get_queryset(self):
+        return Order.objects.filter(is_valid=True).exclude(order_status=4)
 
 
-def order_mine_finish(request):
-    """查看自己已完成的订单"""
-    name = request.session.get('user_name')
-    order_list = Order.objects.filter(salesperson=name, is_valid=True, order_status=5)
-    return render(request, 'order_finish.html', {
-        'orders': order_list
-    })
+class OrderAllFinishView(OrderFinishView):
+    """查看所有已完成的订单"""
+    def get_queryset(self):
+        return Order.objects.filter(is_valid=True, order_status=4)
 
 
-def order_mine_delete(request):
+class OrderAllDeleteView(OrderDeleteView):
     """查看自己已删除的订单"""
-    name = request.session.get('user_name')
-    order_list = Order.objects.filter(salesperson=name, is_valid=False)
-    return render(request, 'order_delete.html', {
-        'orders': order_list
-    })
+    def get_queryset(self):
+        return Order.objects.filter(is_valid=False)

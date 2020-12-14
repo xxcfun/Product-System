@@ -8,8 +8,8 @@
 
   <blockquote class="layui-elem-quote" style="display: flex; justify-content: space-between;">
     生产订单列表
-    {% if request.session.user_power == 1 or request.session.user_power == 4 %}
-    <a href="{% url 'order_mine' %}" style="display: flex; justify-content: flex-end;">我的所有订单</a>
+    {% if request.session.user_power == 4 %}
+    <a href="{% url 'order_all' %}" style="display: flex; justify-content: flex-end;">查看全部订单</a>
     {% endif %}
   </blockquote>
 
@@ -18,8 +18,8 @@
       <colgroup>
         <col width="3%">
         <col width="20%">
-        <col width="24%">
-        <col width="29%">
+        <col width="25%">
+        <col width="28%">
         <col width="6%">
         <col width="6%">
         <col width="6%">
@@ -43,7 +43,7 @@
       {% for order in orders %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td>{{ order.customer }}</td>
+        <td style="color: #01AAED">{{ order.customer }}</td>
         <td>
           <table>
             <colgroup>
