@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 
-from order.models import Order
+from order.models import Order, OrderBill
 from order.views import OrderView
 from product.models import Product
 from utils import constants
@@ -104,21 +104,21 @@ class ProduceView(ProductStatusView):
     """生产中"""
     def get_queryset(self):
         # user = self.request.session.get('user_id')
-        return Order.objects.filter(order_status=constants.ORDER_SCZ).order_by('-order_id')
+        return Order.objects.filter(order_status=constants.ORDER_SCZ).order_by('-update_time')
 
 
 class DeliverView(ProductStatusView):
     """待发货"""
     def get_queryset(self):
         # user = self.request.session.get('user_id')
-        return Order.objects.filter(order_status=constants.ORDER_DFH).order_by('-order_id')
+        return Order.objects.filter(order_status=constants.ORDER_DFH).order_by('-update_time')
 
 
 class FinishView(ProductStatusView):
     """订单完成"""
     def get_queryset(self):
         # user = self.request.session.get('user_id')
-        return Order.objects.filter(order_status=constants.ORDER_WC).order_by('-order_id')
+        return Order.objects.filter(order_status=constants.ORDER_WC).order_by('-update_time')
 
 
 def prod_edit(request, pk):
@@ -137,7 +137,6 @@ def prod_edit(request, pk):
     只有所有订单都生产完毕才能点发货
     """
     if order_status == constants.ORDER_SCZ:
-
         order.order_status = constants.ORDER_DFH
         order.save()
         order.update_status_dfh()
@@ -149,18 +148,21 @@ def prod_edit(request, pk):
         order.order_status = constants.ORDER_WC
         order.save()
         order.update_status_ddwc()
+        # 订单发货后，将完成的订单存入order_bill表
+        orderbill = OrderBill
+        orderbill.objects.get_or_create(order_id=order.order_id)
         return redirect('prod_finish')
 """流程控制结束"""
 
 
-def prod_seach(request):
-    # 订单筛选搜索
-    customer = request.POST.get('customer', '')
-    good = request.POST.get('good', '')
-    status = request.POST.get('status', '')
-    if customer:
-        products = Product.order.objects.filter(customer__name=customer)
-    products = Product.objects.all()
-    return render(request, 'prod_seach.html', {
-        'products': products
-    })
+# def prod_seach(request):
+#     # 订单筛选搜索
+#     customer = request.POST.get('customer', '')
+#     good = request.POST.get('good', '')
+#     status = request.POST.get('status', '')
+#     if customer:
+#         products = Product.order.objects.filter(customer__name=customer)
+#     products = Product.objects.all()
+#     return render(request, 'prod_seach.html', {
+#         'products': products
+#     })

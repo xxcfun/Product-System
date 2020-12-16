@@ -2,7 +2,7 @@ from django.urls import path
 
 from order import views
 from order.views import OrderView, OrderFinishView, OrderDeleteView, OrderAllView, OrderAllFinishView, \
-    OrderAllDeleteView
+    OrderAllDeleteView, OrderAllBillView, OrderBillView
 
 urlpatterns = [
     # 业务
@@ -20,8 +20,14 @@ urlpatterns = [
     path('all_finish/', OrderAllFinishView.as_view(), name='order_all_finish'),
     # 查看自己已删除的订单
     path('all_delete/', OrderAllDeleteView.as_view(), name='order_all_delete'),
+    # 查看所有物流单号信息
+    path('all_bill/', OrderAllBillView.as_view(), name='order_all_bill'),
 
     # 商务
-    path('seach/', views.order_seach, name='order_seach')
-
+    # 筛选订单
+    path('seach/', views.order_seach, name='order_seach'),
+    # 查询物流单号
+    path('bill/', OrderBillView.as_view(), name='order_bill'),
+    # 填写物流单号
+    path('odd/<int:order_id>', views.order_odd, name='order_odd')
 ]

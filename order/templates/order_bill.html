@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>订单物流信息</title>
+{% endblock %}
+
+{% block container %}
+
+  <blockquote class="layui-elem-quote" style="display: flex; justify-content: space-between;">
+    订单物流信息
+    {% if request.session.user_power == 4 %}
+      <a href="{% url 'order_all_bill' %}" style="display: flex; justify-content: flex-end;">查看全部已完成订单</a>
+    {% endif %}
+  </blockquote>
+
+  <div>
+    <table class="layui-table">
+      <colgroup>
+        <col width="3%">
+        <col width="16%">
+        <col width="25%">
+        <col width="22%">
+        <col width="6%">
+        <col width="22%">
+        <col width="6%">
+{#        <col width="5%">#}
+      </colgroup>
+      <thead>
+      <tr>
+        <th></th>
+        <th>客户名称</th>
+        <th>主料号信息</th>
+        <th>附加说明</th>
+        <th>业务人员</th>
+        <th>物流单号</th>
+        <th>操作</th>
+{#        <th fixed="right">操作</th>#}
+      </tr>
+      </thead>
+      <tbody>
+      {% for order in orders %}
+        <form action="{% url 'order_odd' order.order.order_id %}" method="post">
+          {% csrf_token %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td style="color: #01AAED">{{ order.order.customer }}</td>
+            <td>{{ order.order.good }}</td>
+            <td>{{ order.order.remark }}</td>
+            <td>{{ order.order.salesperson }}</td>
+            {% if request.session.user_power == 3 %}
+              <td><input type="text" name="odd_number" class="layui-input"
+                         value="{{ order.odd_number|default_if_none:'' }}"></td>
+              <td>
+                <button class="layui-btn layui-btn-sm layui-btn-normal">保存</button>
+              </td>
+            {% else %}
+              <td id="{{ order.id }}">{{ order.odd_number }}</td>
+              <td><a class="layui-btn layui-btn-sm layui-btn-normal"
+                     onclick="copy{{ order.id }}()">复制</a></td>
+              <script>
+                  function copy{{ order.id }}() {
+                      var val = document.getElementById('{{ order.id }}');
+                      window.getSelection().selectAllChildren(val);
+                      document.execCommand("Copy");
+                  }
+              </script>
+            {% endif %}
+          </tr>
+        </form>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if page_obj %}
+    {% if page_obj.has_previous %}
+      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.previous_page_number }}">上一页</a>
+    {% endif %}
+    <a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">当前页 {{ page_obj.number }} 共 {{ paginator.num_pages }} 页.</a>
+    {% if page_obj.has_next %}
+      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.next_page_number }}">下一页</a>
+    {% endif %}
+  {% endif %}
+{% endblock %}
+
+{% block footer %}
+{#  <script src='/static/js/clipboard.min.js'></script>#}
+{% endblock %}

@@ -21,19 +21,26 @@
         <li class="layui-nav-item"><a href="{% url 'order' %}">所有订单</a></li>
         <li class="layui-nav-item"><a href="{% url 'order_finish' %}">已完成订单</a></li>
         <li class="layui-nav-item"><a href="{% url 'order_delete' %}">已删除订单</a></li>
+        <li class="layui-nav-item"><a href="{% url 'order_bill' %}">物流单号查询</a></li>
       {% elif request.session.user_power == 2 %}
         {# 生产 #}
         <li class="layui-nav-item"><a href="{% url 'prod_order' %}">我的生产控制台</a></li>
+        <li class="layui-nav-item"><a href="{% url 'order_seach' %}">订单搜索</a></li>
+        <li class="layui-nav-item"><a href="{% url 'order_all_bill' %}">物流单号查询</a></li>
       {% elif request.session.user_power == 3 %}
         {# 商务 #}
-{#        <li class="layui-nav-item"><a href="{% url 'order' %}">所有订单</a></li>#}
+        <li class="layui-nav-item"><a href="{% url 'order_all' %}">所有订单</a></li>
+        <li class="layui-nav-item"><a href="{% url 'order_all_finish' %}">已完成订单</a></li>
+        <li class="layui-nav-item"><a href="{% url 'order_all_delete' %}">已删除订单</a></li>
         <li class="layui-nav-item"><a href="{% url 'order_seach' %}">订单搜索</a></li>
+        <li class="layui-nav-item"><a href="{% url 'order_all_bill' %}">物流单号查询</a></li>
       {% elif request.session.user_power == 4 %}
         {# 经理 #}
         <li class="layui-nav-item"><a href="{% url 'order' %}">所有订单</a></li>
         <li class="layui-nav-item"><a href="{% url 'order_finish' %}">已完成订单</a></li>
         <li class="layui-nav-item"><a href="{% url 'order_delete' %}">已删除订单</a></li>
         <li class="layui-nav-item"><a href="{% url 'order_seach' %}">订单搜索</a></li>
+        <li class="layui-nav-item"><a href="{% url 'order_bill' %}">物流单号查询</a></li>
       {% endif %}
     </ul>
     <ul class="layui-nav layui-layout-right">
@@ -55,7 +62,7 @@
 
   <div class="layui-body" style="left: 0">
     <!-- 内容主体区域 -->
-    <div style="padding: 15px;">
+    <div class="layui-anim layui-anim-scale" style="padding: 15px;">
 
       {% block container %}
         {# 页面内容区域 #}

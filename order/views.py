@@ -6,8 +6,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.views.generic import ListView
 
-from order.models import Order, OrderList
+from order.models import Order, OrderList, OrderBill
 from user.models import User
+from utils import constants
 
 
 class OrderView(ListView):
@@ -74,6 +75,7 @@ class OrderAllDeleteView(OrderDeleteView):
 
 
 def order_seach(request):
+    """订单搜索"""
     if 'customer' in request.GET and request.GET['customer']:
         customer = request.GET['customer']
         orders = Order.objects.filter(customer__icontains=customer).exclude(is_valid=False)
@@ -92,3 +94,30 @@ def order_seach(request):
         'order_list': order_list,
         'user_list': user_list
     })
+
+
+class OrderBillView(ListView):
+    """查询所有人的物流单号信息"""
+    model = OrderBill
+    template_name = 'order_bill.html'
+    context_object_name = 'orders'
+    paginate_by = 10
+
+    def get_queryset(self):
+        name = self.request.session.get('user_name')
+        return OrderBill.objects.filter(order__salesperson=name, order__order_status=constants.ORDER_WC)
+
+
+class OrderAllBillView(OrderBillView):
+    """查看所有人的物流单号信息"""
+    def get_queryset(self):
+        return OrderBill.objects.filter(order__order_status=constants.ORDER_WC)
+
+
+def order_odd(request, order_id):
+    """物流填写"""
+    odd_number = request.POST.get('odd_number')
+    orderbill = get_object_or_404(OrderBill, order_id=order_id)
+    orderbill.odd_number = odd_number
+    orderbill.save()
+    return redirect('order_bill')
