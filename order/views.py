@@ -1,5 +1,6 @@
 import datetime
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -78,15 +79,23 @@ def order_seach(request):
     """订单搜索"""
     if 'customer' in request.GET and request.GET['customer']:
         customer = request.GET['customer']
-        orders = Order.objects.filter(customer__icontains=customer).exclude(is_valid=False)
+        order = Order.objects.filter(customer__icontains=customer).exclude(is_valid=False)
     elif 'status' in request.GET and request.GET['status']:
         status = request.GET['status']
-        orders = Order.objects.filter(order_status=status).exclude(is_valid=False)
+        order = Order.objects.filter(order_status=status).exclude(is_valid=False)
     elif 'salesperson' in request.GET and request.GET['salesperson']:
         salesperson = request.GET['salesperson']
-        orders = Order.objects.filter(salesperson=salesperson).exclude(is_valid=False)
+        order = Order.objects.filter(salesperson=salesperson).exclude(is_valid=False)
     else:
-        orders = Order.objects.exclude(is_valid=False)
+        order = Order.objects.exclude(is_valid=False)
+    paginator = Paginator(order, 10)
+    page = request.GET.get('page')
+    try:
+        orders = paginator.page(page)
+    except PageNotAnInteger:
+        orders = paginator.page(1)
+    except EmptyPage:
+        orders = paginator.page(paginator.num_pages)
     order_list = OrderList.objects.all()
     user_list = User.objects.filter(power=1)
     return render(request, 'order_seach.html', {

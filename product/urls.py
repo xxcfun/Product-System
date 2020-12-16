@@ -22,4 +22,6 @@ urlpatterns = [
     path('finish/', FinishView.as_view(), name='prod_finish'),
     # 更改生产状态
     path('edit/<int:pk>', views.prod_edit, name='prod_edit'),
+    # 批量删除
+    path('delall/', views.prod_del_all, name='prod_del_all')
 ]

@@ -166,3 +166,17 @@ def prod_edit(request, pk):
 #     return render(request, 'prod_seach.html', {
 #         'products': products
 #     })
+
+
+def prod_del_all(request):
+    if request.method == 'POST':
+        # 得到要删除的id列表
+        values = request.POST.getlist('vals')
+        print(values)
+        for i in values:
+            # 如果i不为空，就获取这个字段
+            if i != '':
+                order = get_object_or_404(Order, order_id=i)
+                order.is_valid = 0
+                order.save()
+    return redirect('prod_order')

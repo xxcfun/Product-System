@@ -118,16 +118,25 @@
     </table>
   </div>
 
-  {# 复用 #}
-  {% if page_obj %}
-    {% if page_obj.has_previous %}
-      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.previous_page_number }}">上一页</a>
-    {% endif %}
-    <a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;">当前页 {{ page_obj.number }} 共 {{ paginator.num_pages }} 页.</a>
-    {% if page_obj.has_next %}
-      <a class="layui-btn layui-btn-normal layui-btn-sm" href="?page={{ page_obj.next_page_number }}">下一页</a>
-    {% endif %}
-  {% endif %}
+  <div>
+    <nav>
+      <ul class="pagination">
+        <li class="step-links">
+          {% if orders.has_previous %}
+            <a class='active layui-btn layui-btn-normal layui-btn-sm' href="?page={{ orders.previous_page_number }}">上一页</a>
+          {% endif %}
+
+          <span class="current layui-btn layui-btn-primary layui-btn-sm">
+            当前页 {{ orders.number }}. 共 {{ orders.paginator.num_pages }} 页.</span>
+
+          {% if orders.has_next %}
+            <a class='active layui-btn layui-btn-normal layui-btn-sm'
+               href="?page={{ orders.next_page_number }}">下一页</a>
+          {% endif %}
+        </li>
+      </ul>
+    </nav>
+  </div>
 {% endblock %}
 
 {% block footer %}

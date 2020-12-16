@@ -29,8 +29,21 @@
     </fieldset>
   </div>
 
+  <!--按钮组-->
+  <fieldset class="layui-elem-field">
+{#    <legend>订单状态</legend>#}
+    <div class="layui-field-box">
+      <div style="right: 50px;">
+{#        <button type="button" class="layui-btn layui-btn-primary">全选</button>#}
+        <button type="button" class="layui-btn layui-btn-normal">批量生产</button>
+        <button type="button" class="layui-btn layui-btn-danger" onclick="getValues()">批量删除</button>
+      </div>
+    </div>
+  </fieldset>
+
   <div>
     <table class="layui-table">
+    {% csrf_token %}
       <colgroup>
         <col width="3%">
         <col width="16%">
@@ -45,7 +58,7 @@
       </colgroup>
       <thead>
       <tr>
-        <th></th>
+        <th><input type="checkbox" id="checkAll" onclick="checkAll()"></th>
         <th>客户名称</th>
         <th>产品信息及数量</th>
         <th>附加说明</th>
@@ -60,7 +73,7 @@
       <tbody>
       {% for order in orders %}
       <tr>
-        <td>{{ forloop.counter }}</td>
+        <td><input type="checkbox" onclick="checkOne()" value="{{ order.order_id }}" name="order"></td>
         <td style="color: #01AAED">{{ order.customer }}</td>
         <td>
           <table>
@@ -86,7 +99,7 @@
         <td>{{ order.created_time|slice:"5:" }}</td>
         <td>{{ order.deliver_time|slice:"5:"|default_if_none:'未注明' }}</td>
         <td><a class="layui-btn layui-btn-sm layui-btn-primary">{{ order.get_order_status_display }}</a></td>
-        <td><a class="layui-btn layui-btn-sm" onclick="return addProd();"
+        <td><a class="layui-btn layui-btn-sm layui-btn-normal" onclick="return addProd();"
               href="{% url 'prod_add' order.order_id %}">生产</a></td>
         <td><a class="layui-btn layui-btn-sm layui-btn-danger" onclick="return delProd();"
               href="{% url 'prod_del' order.order_id %}">删除</a></td>
@@ -108,20 +121,78 @@
 {% endblock %}
 
 {% block footer %}
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
   <script type="text/javascript" language="JavaScript">
-    function addProd() {
-        if (confirm('是否进入生产')){
-            return true;
-        } else {
-            return false;
-        }
-    }
-    function delProd() {
-        if (confirm('是否要删除该订单')){
-            return true;
-        } else {
-            return false;
-        }
-    }
+      function addProd() {
+          if (confirm('是否进入生产')) {
+              return true;
+          } else {
+              return false;
+          }
+      }
+
+      function delProd() {
+          if (confirm('是否要删除该订单')) {
+              return true;
+          } else {
+              return false;
+          }
+      }
+
+      function checkAll() {
+          var flag = document.getElementById("checkAll").checked;
+          var ones = document.getElementsByName("order");
+          for (var i=0; i<ones.length; i++){
+              ones[i].checked=flag
+          }
+      }
+
+      function checkOne() {
+          var one = document.getElementsByName("order");
+          one.checked = true;
+      }
+
+      function getValues() {
+          if (!confirm("确定删除这些吗?")) {
+              return;
+          }
+          var valArr = [];
+          var ones = document.getElementsByName('order');
+          for (var i = 0; i < ones.length; i++) {
+              if (ones[i].checked) {
+                  valArr[i] = ones[i].value
+              }
+          }
+          if (valArr.length !== 0) {
+              // var vals = valArr.join(',');
+              // alert(valArr);
+              $.ajax({
+                  //地址一定要正确
+                  url: "{% url 'prod_del_all' %}",
+                  //全部大写
+                  type: 'POST',
+                  contenType: 'application/json',
+                  //不加这个，ajax会将结果后边加个[]，例如{'vals[]':[4, 6, 8]}
+                  traditional: true,
+                  //不加这个，会报服务器终止了一个在运行的程序
+                  async: false,
+                  //不加这个，会报Forbidden (CSRF token missing or incorrect.): /product/delall/
+                  data: {
+                      csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                      'vals': valArr,
+                  },
+                  success: function () {
+                      console.log('删除成功')
+                      window.location.replace('/product/order');
+                  },
+                  error: function () {
+                      alert("删除失败");
+                  }
+              })
+          } else {
+              var error_m = "请选择数据";
+              alert(error_m);
+          }
+      }
   </script>
 {% endblock %}
