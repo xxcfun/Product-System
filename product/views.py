@@ -75,9 +75,6 @@ def prod_del(request, order_id):
     return redirect('prod_order')
 
 
-"""
-    这里主要是流程控制
-"""
 class ProductStatusView(OrderView):
     """生产控制中的备料，生产，发货和订单完成"""
     models = Order
@@ -91,13 +88,6 @@ class ProductStatusView(OrderView):
         context['url'] = self.request.get_full_path().split('/')[2]
         # 用get_full_path()来获取url地址，split分割url，然后取第三个字符串
         return context
-
-# #备料已删除
-# class MaterialView(ProductStatusView):
-#     """备料"""
-#     def get_queryset(self):
-#         user = self.request.session.get('user_id')
-#         return Product.objects.filter(order__order_status=constants.ORDER_BLZ, user=user).order_by('-updated_time')
 
 
 class ProduceView(ProductStatusView):
@@ -121,58 +111,31 @@ class FinishView(ProductStatusView):
         return Order.objects.filter(order_status=constants.ORDER_WC).order_by('-update_time')
 
 
-def prod_edit(request, pk):
+def prod_edit(request, order_id):
     """状态修改"""
-    order = get_object_or_404(Order, pk=pk)
+    order = get_object_or_404(Order, order_id=order_id)
     order_status = order.order_status
-    # """
-    # 备料-生产中
-    # """
-    # if prod_status == constants.ORDER_BLZ:
-    #     prod.status = constants.ORDER_SCZ
-    #     prod.save()
-    #     return redirect('prod_produce')
-    """
-    生产中-待发货
-    只有所有订单都生产完毕才能点发货
-    """
+    # 生产中-待发货，只有所有订单都生产完毕才能点发货
     if order_status == constants.ORDER_SCZ:
         order.order_status = constants.ORDER_DFH
         order.save()
-        order.update_status_dfh()
         return redirect('prod_deliver')
-    """
-    待发货-订单完成
-    """
+    # 待发货-订单完成
     if order_status == constants.ORDER_DFH:
         order.order_status = constants.ORDER_WC
         order.save()
-        order.update_status_ddwc()
         # 订单发货后，将完成的订单存入order_bill表
         orderbill = OrderBill
         orderbill.objects.get_or_create(order_id=order.order_id)
         return redirect('prod_finish')
-"""流程控制结束"""
 
 
-# def prod_seach(request):
-#     # 订单筛选搜索
-#     customer = request.POST.get('customer', '')
-#     good = request.POST.get('good', '')
-#     status = request.POST.get('status', '')
-#     if customer:
-#         products = Product.order.objects.filter(customer__name=customer)
-#     products = Product.objects.all()
-#     return render(request, 'prod_seach.html', {
-#         'products': products
-#     })
-
-
+"""批量操作"""
 def prod_del_all(request):
+    """批量删除订单信息"""
     if request.method == 'POST':
         # 得到要删除的id列表
         values = request.POST.getlist('vals')
-        print(values)
         for i in values:
             # 如果i不为空，就获取这个字段
             if i != '':
@@ -180,3 +143,35 @@ def prod_del_all(request):
                 order.is_valid = 0
                 order.save()
     return redirect('prod_order')
+
+
+def prod_add_all(request):
+    """批量生产订单"""
+    if request.method == 'POST':
+        values = request.POST.getlist('vals')
+        for i in values:
+            if i != '':
+                order = get_object_or_404(Order, order_id=i)
+                order.order_status = constants.ORDER_SCZ
+                order.save()
+    return redirect('prod_produce')
+
+
+def prod_edit_all(request):
+    """批量更改订单状态"""
+    if request.method == 'POST':
+        values = request.POST.getlist('vals')
+        for i in values:
+            if i != '':
+                order = get_object_or_404(Order, order_id=i)
+                order_status = order.order_status
+                if order_status == constants.ORDER_SCZ:
+                    order.order_status = constants.ORDER_DFH
+                    order.save()
+                if order_status == constants.ORDER_DFH:
+                    order.order_status = constants.ORDER_WC
+                    order.save()
+                    orderbill = OrderBill
+                    orderbill.objects.get_or_create(order_id=order.order_id)
+        return HttpResponse('ok')
+

@@ -21,7 +21,13 @@ urlpatterns = [
     # 订单完成阶段
     path('finish/', FinishView.as_view(), name='prod_finish'),
     # 更改生产状态
-    path('edit/<int:pk>', views.prod_edit, name='prod_edit'),
+    path('edit/<int:order_id>', views.prod_edit, name='prod_edit'),
+
+    # 下面都为批量操作
     # 批量删除
-    path('delall/', views.prod_del_all, name='prod_del_all')
+    path('delall/', views.prod_del_all, name='prod_del_all'),
+    # 批量生产进入生产列表
+    path('addall/', views.prod_add_all, name='prod_add_all'),
+    # 批量更改生产状态
+    path('editall/', views.prod_edit_all, name='prod_edit_all'),
 ]

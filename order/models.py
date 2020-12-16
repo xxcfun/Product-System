@@ -43,24 +43,6 @@ class Order(models.Model):
             self.refresh_from_db()
         self.refresh_from_db()
 
-    def update_status_scz(self):
-        """当订单开始生产时，状态改为生产中"""
-        self.order_status = constants.ORDER_SCZ
-        self.save()
-        self.refresh_from_db()
-
-    def update_status_dfh(self):
-        """当生产结束了，状态改为待发货"""
-        self.order_status = constants.ORDER_DFH
-        self.save()
-        self.refresh_from_db()
-
-    def update_status_ddwc(self):
-        """当发货完成时，订单完成，将is_valid字段改为false"""
-        self.order_status = constants.ORDER_WC
-        self.save()
-        self.refresh_from_db()
-
 
 class OrderList(models.Model):
     """所有订单的配件信息"""

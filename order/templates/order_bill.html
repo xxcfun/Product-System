@@ -54,7 +54,7 @@
                 <button class="layui-btn layui-btn-sm layui-btn-normal">保存</button>
               </td>
             {% else %}
-              <td id="{{ order.id }}">{{ order.odd_number }}</td>
+              <td id="{{ order.id }}">{{ order.odd_number|default_if_none:'暂未填写，请联系商务' }}</td>
               <td><a class="layui-btn layui-btn-sm layui-btn-normal"
                      onclick="copy{{ order.id }}()">复制</a></td>
               <script>

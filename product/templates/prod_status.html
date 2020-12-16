@@ -53,8 +53,23 @@
     </fieldset>
   </div>
 
+  {% if url != 'finish' %}
+  <!--按钮组-->
+  <fieldset class="layui-elem-field">
+{#    <legend>订单状态</legend>#}
+    <div class="layui-field-box">
+      <div style="right: 50px;">
+{#        <button type="button" class="layui-btn layui-btn-primary">全选</button>#}
+        <button type="button" class="layui-btn layui-btn-normal" onclick="getProduces()">批量操作</button>
+{#        <button type="button" class="layui-btn layui-btn-danger" onclick="getValues()">批量删除</button>#}
+      </div>
+    </div>
+  </fieldset>
+  {% endif %}
+
   <div>
     <table class="layui-table">
+    {% csrf_token %}
       <colgroup>
         <col width="3%">
         <col width="16%">
@@ -68,7 +83,7 @@
       </colgroup>
       <thead>
       <tr>
-        <th></th>
+        <th><input type="checkbox" id="checkAll" onclick="checkAll()"></th>
         <th>客户名称</th>
         <th>产品信息及数量</th>
         <th>附加说明</th>
@@ -82,7 +97,7 @@
       <tbody>
       {% for order in orders %}
       <tr>
-        <td>{{ forloop.counter }}</td>
+        <td><input type="checkbox" onclick="checkOne()" value="{{ order.order_id }}" name="order"></td>
         <td style="color: #01AAED">{{ order.customer }}</td>
         <td>
           <table>
@@ -116,9 +131,6 @@
         {% elif order.order_status == 2 %}
           <td><a class="layui-btn layui-btn-warm layui-btn-sm"
                onclick="return editProd();" href="{% url 'prod_edit' order.order_id %}">生产完成</a></td>
-{#        {% elif order.order_status == 1 %}#}
-{#          <td><a class="layui-btn layui-btn-warm layui-btn-sm"#}
-{#               onclick="return editProd();" href="{% url 'prod_edit' order.order_id %}">备料完成</a></td>#}
         {% endif %}
       </tr>
       {% endfor %}
@@ -138,13 +150,65 @@
 {% endblock %}
 
 {% block footer %}
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
   <script type="text/javascript" language="JavaScript">
-    function editProd() {
-        if (confirm('是否将生产状态提交到下一步操作')){
-            return true;
-        } else {
-            return false;
-        }
-    }
+      function editProd() {
+          if (confirm('是否将生产状态提交到下一步操作')) {
+              return true;
+          } else {
+              return false;
+          }
+      }
+
+      function checkAll() {
+          var flag = document.getElementById("checkAll").checked;
+          var ones = document.getElementsByName("order");
+          for (var i = 0; i < ones.length; i++) {
+              ones[i].checked = flag
+          }
+      }
+
+      function checkOne() {
+          var one = document.getElementsByName("order");
+          one.checked = true;
+      }
+
+      /*批量操作*/
+      function getProduces() {
+          var valArr = [];
+          var ones = document.getElementsByName('order');
+          for (var i = 0; i < ones.length; i++) {
+              if (ones[i].checked) {
+                  valArr[i] = ones[i].value
+              }
+          }
+          if (valArr.length !== 0) {
+              if (!confirm("确定要生产这些吗？")) {
+                  return;
+              }
+              $.ajax({
+                  url: "{% url 'prod_edit_all' %}",
+                  type: 'POST',
+                  contenType: 'application/json',
+                  traditional: true,
+                  async: false,
+                  data: {
+                      csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                      'vals': valArr,
+                  },
+                  success: function () {
+                      console.log('添加生产成功');
+                      window.location.replace('.');
+                      alert('操作成功，等待跳转')
+                  },
+                  error: function () {
+                      alert('添加生产失败');
+                  }
+              })
+          } else {
+              var error_m = '请选择数据';
+              alert(error_m)
+          }
+      }
   </script>
 {% endblock %}

@@ -35,7 +35,7 @@
     <div class="layui-field-box">
       <div style="right: 50px;">
 {#        <button type="button" class="layui-btn layui-btn-primary">全选</button>#}
-        <button type="button" class="layui-btn layui-btn-normal">批量生产</button>
+        <button type="button" class="layui-btn layui-btn-normal" onclick="getProduces()">批量生产</button>
         <button type="button" class="layui-btn layui-btn-danger" onclick="getValues()">批量删除</button>
       </div>
     </div>
@@ -152,10 +152,8 @@
           one.checked = true;
       }
 
+      /*批量删除*/
       function getValues() {
-          if (!confirm("确定删除这些吗?")) {
-              return;
-          }
           var valArr = [];
           var ones = document.getElementsByName('order');
           for (var i = 0; i < ones.length; i++) {
@@ -164,6 +162,9 @@
               }
           }
           if (valArr.length !== 0) {
+              if (!confirm("确定删除这些吗?")) {
+                  return;
+              }
               // var vals = valArr.join(',');
               // alert(valArr);
               $.ajax({
@@ -184,6 +185,7 @@
                   success: function () {
                       console.log('删除成功')
                       window.location.replace('/product/order');
+                      alert('删除成功，等待跳转')
                   },
                   error: function () {
                       alert("删除失败");
@@ -192,6 +194,44 @@
           } else {
               var error_m = "请选择数据";
               alert(error_m);
+          }
+      }
+
+      /*批量生产*/
+      function getProduces() {
+          var valArr = [];
+          var ones = document.getElementsByName('order');
+          for (var i = 0; i< ones.length; i++) {
+              if (ones[i].checked) {
+                  valArr[i] = ones[i].value
+              }
+          }
+          if (valArr.length !== 0) {
+              if (!confirm("确定要生产这些吗？")) {
+                  return;
+              }
+              $.ajax({
+                  url: "{% url 'prod_add_all' %}",
+                  type: 'POST',
+                  contenType: 'application/json',
+                  traditional: true,
+                  async: false,
+                  data: {
+                      csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                      'vals': valArr,
+                  },
+                  success: function () {
+                      console.log('添加生产成功');
+                      window.location.replace('/product/produce');
+                      alert('添加成功，等待跳转')
+                  },
+                  error: function (){
+                      alert('添加生产失败');
+                  }
+              })
+          } else {
+              var error_m = '请选择数据';
+              alert(error_m)
           }
       }
   </script>
