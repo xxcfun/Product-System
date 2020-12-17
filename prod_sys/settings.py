@@ -25,7 +25,7 @@ SECRET_KEY = '8wdtg37f-)l=_o8n@&)w%lx1ee6%-!yy8_w7w-^rmw9jkuy9-a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -78,6 +78,7 @@ WSGI_APPLICATION = 'prod_sys.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# 线下数据库
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -88,6 +89,18 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+# 线上数据库
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'prod_sys',
+#         'USER': 'kcmas',
+#         'PASSWORD': 'kcroot',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#     }
+# }
 
 
 # Password validation
