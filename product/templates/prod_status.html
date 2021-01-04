@@ -73,13 +73,14 @@
       <colgroup>
         <col width="3%">
         <col width="16%">
-        <col width="27%">
-        <col width="24%">
+        <col width="25%">
+        <col width="22%">
         <col width="6%">
         <col width="6%">
         <col width="6%">
         <col width="6%">
-        <col width="6%">
+        <col width="5%">
+        <col width="5%">
       </colgroup>
       <thead>
       <tr>
@@ -92,6 +93,7 @@
         <th>发货时间</th>
         <th>订单状态</th>
         <th>操作</th>
+        <th>删除</th>
       </tr>
       </thead>
       <tbody>
@@ -132,6 +134,12 @@
           <td><a class="layui-btn layui-btn-warm layui-btn-sm"
                onclick="return editProd();" href="{% url 'prod_edit' order.order_id %}">生产完成</a></td>
         {% endif %}
+        {% if order.order_status == 4 %}
+        <td><a class="layui-btn layui-btn-sm layui-btn-disabled">删除</a></td>
+        {% else %}
+        <td><a class="layui-btn layui-btn-sm layui-btn-danger" onclick="return delProd();"
+              href="{% url 'prod_del' order.order_id %}">删除</a></td>
+        {% endif %}
       </tr>
       {% endfor %}
       </tbody>
@@ -154,6 +162,14 @@
   <script type="text/javascript" language="JavaScript">
       function editProd() {
           if (confirm('是否将生产状态提交到下一步操作')) {
+              return true;
+          } else {
+              return false;
+          }
+      }
+
+      function delProd() {
+          if (confirm('是否要删除该订单')) {
               return true;
           } else {
               return false;

@@ -94,21 +94,21 @@ class ProduceView(ProductStatusView):
     """生产中"""
     def get_queryset(self):
         # user = self.request.session.get('user_id')
-        return Order.objects.filter(order_status=constants.ORDER_SCZ).order_by('-update_time')
+        return Order.objects.filter(order_status=constants.ORDER_SCZ, is_valid=True).order_by('-update_time')
 
 
 class DeliverView(ProductStatusView):
     """待发货"""
     def get_queryset(self):
         # user = self.request.session.get('user_id')
-        return Order.objects.filter(order_status=constants.ORDER_DFH).order_by('-update_time')
+        return Order.objects.filter(order_status=constants.ORDER_DFH, is_valid=True).order_by('-update_time')
 
 
 class FinishView(ProductStatusView):
     """订单完成"""
     def get_queryset(self):
         # user = self.request.session.get('user_id')
-        return Order.objects.filter(order_status=constants.ORDER_WC).order_by('-update_time')
+        return Order.objects.filter(order_status=constants.ORDER_WC, is_valid=True).order_by('-update_time')
 
 
 def prod_edit(request, order_id):
