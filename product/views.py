@@ -130,6 +130,30 @@ def prod_edit(request, order_id):
         return redirect('prod_finish')
 
 
+def prod_revoke(request, order_id):
+    """订单撤销"""
+    order = get_object_or_404(Order, order_id=order_id)
+    order_status = order.order_status
+    # 生产中——待生产
+    if order_status == constants.ORDER_SCZ:
+        order.order_status = constants.ORDER_DSC
+        order.save()
+        return redirect('prod_order')
+    # 待发货——生产中
+    if order_status == constants.ORDER_DFH:
+        order.order_status = constants.ORDER_SCZ
+        order.save()
+        return redirect('prod_produce')
+    # 订单完成——待发货
+    if order_status == constants.ORDER_WC:
+        order.order_status = constants.ORDER_DFH
+        order.save()
+        # 订单撤销后，将order_bill里面的信息删除
+        orderbill = get_object_or_404(OrderBill, order_id=order_id)
+        orderbill.delete()
+        return redirect('prod_deliver')
+
+
 """批量操作"""
 def prod_del_all(request):
     """批量删除订单信息"""
@@ -174,4 +198,3 @@ def prod_edit_all(request):
                     orderbill = OrderBill
                     orderbill.objects.get_or_create(order_id=order.order_id)
         return HttpResponse('ok')
-

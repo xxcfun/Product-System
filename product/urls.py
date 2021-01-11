@@ -22,6 +22,8 @@ urlpatterns = [
     path('finish/', FinishView.as_view(), name='prod_finish'),
     # 更改生产状态
     path('edit/<int:order_id>', views.prod_edit, name='prod_edit'),
+    # 撤销生产状态
+    path('revoke/<int:order_id>', views.prod_revoke, name='prod_revoke'),
 
     # 下面都为批量操作
     # 批量删除

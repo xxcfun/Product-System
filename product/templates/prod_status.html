@@ -73,12 +73,13 @@
       <colgroup>
         <col width="3%">
         <col width="16%">
-        <col width="25%">
         <col width="22%">
+        <col width="20%">
         <col width="6%">
         <col width="6%">
         <col width="6%">
         <col width="6%">
+        <col width="5%">
         <col width="5%">
         <col width="5%">
       </colgroup>
@@ -93,6 +94,7 @@
         <th>发货时间</th>
         <th>订单状态</th>
         <th>操作</th>
+        <th>撤销</th>
         <th>删除</th>
       </tr>
       </thead>
@@ -125,8 +127,9 @@
         <td>{{ order.created_time|slice:"5:" }}</td>
         <td>{{ order.deliver_time|slice:"5:"|default_if_none:'未注明' }}</td>
         <td><a class="layui-btn layui-btn-sm layui-btn-primary">{{ order.get_order_status_display }}</a></td>
+
         {% if order.order_status == 4 %}
-          <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:;">订单完成</a></td>
+          <td><a class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:;">已完成</a></td>
         {% elif order.order_status == 3 %}
           <td><a class="layui-btn layui-btn-warm layui-btn-sm"
                onclick="return editProd();" href="{% url 'prod_edit' order.order_id %}">去发货</a></td>
@@ -134,6 +137,9 @@
           <td><a class="layui-btn layui-btn-warm layui-btn-sm"
                onclick="return editProd();" href="{% url 'prod_edit' order.order_id %}">生产完成</a></td>
         {% endif %}
+
+        <td><a class="layui-btn layui-btn-sm" onclick="return revProd();" href="{% url 'prod_revoke' order.order_id %}">撤销</a></td>
+
         {% if order.order_status == 4 %}
         <td><a class="layui-btn layui-btn-sm layui-btn-disabled">删除</a></td>
         {% else %}
@@ -170,6 +176,14 @@
 
       function delProd() {
           if (confirm('是否要删除该订单')) {
+              return true;
+          } else {
+              return false;
+          }
+      }
+
+      function revProd() {
+          if (confirm('是否要将该订单撤回')) {
               return true;
           } else {
               return false;
