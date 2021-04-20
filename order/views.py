@@ -11,7 +11,6 @@ from order.models import Order, OrderList, OrderBill
 from user.models import User
 from utils import constants
 
-
 class OrderView(ListView):
     """订单列表 所有抓取的订单"""
     model = Order
@@ -80,6 +79,10 @@ def order_seach(request):
     if 'customer' in request.GET and request.GET['customer']:
         customer = request.GET['customer']
         order = Order.objects.filter(customer__icontains=customer).exclude(is_valid=False)
+    elif 'date' in request.GET and request.GET['date']:
+        date = request.GET['date']
+        date = date.split(' - ')
+        order = Order.objects.filter(update_time__range=date).exclude(is_valid=False)
     elif 'status' in request.GET and request.GET['status']:
         status = request.GET['status']
         order = Order.objects.filter(order_status=status).exclude(is_valid=False)
